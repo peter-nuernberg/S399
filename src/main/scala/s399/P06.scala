@@ -23,7 +23,7 @@ package s399
  * @example
  * {{{
  *   scala> isPalindrome(List(1, 2, 3, 2, 1))
- *   res0: Boolean = true
+ *   val res0: s399.Result[Boolean] = Right(true)
  * }}}
  */
 trait P06:
@@ -38,17 +38,11 @@ trait P06:
    */
   def isPalindrome(l: List[_]): Result[Boolean]
 
-/**
- * The exercise solution to P06.
- */
+/** The exercise solution to P06. */
 object P06x extends P06:
 
   // TODO: add your implementation here
   override def isPalindrome(l: List[_]): Result[Boolean] = ???
 
-  /**
-   * Driver.
-   *
-   * A main method that executes the exercise solution above on the sample input.
-   */
+  /** A main method that executes the exercise solution above on the sample input. */
   @main def p06xmain: Unit = println(isPalindrome(List(1, 2, 3, 2, 1)))

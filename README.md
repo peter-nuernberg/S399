@@ -4,7 +4,7 @@
 
 Many years ago, when I was first learning Scala,
 I ran across
-[S-99: Ninety-None Scala Problems](http://aperiodic.net/phil/scala/s-99/),
+[S-99: Ninety-Nine Scala Problems](http://aperiodic.net/phil/scala/s-99/),
 which I found a helpful source of example problems.
 This repository is my attempt to reimplement the solutions in Scala 3.
 I also tried to organize the code so that other folks could get started with a bit of plumbing already set up.

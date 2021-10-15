@@ -19,37 +19,30 @@ package s399
 
 import s399.solutions.*
 
-/** The specification of the behavior of a correct solution to [[P01]]. */
-class P01Spec extends BaseSpec {
+/** The specification of the behavior of a correct solution to [[P04]]. */
+class P04Spec extends BaseSpec {
 
-  type Solution[A] = List[A] => Result[A]
+  type Solution = List[_] => Result[Int]
 
-  given[A]: List[Solution[A]] = List(P01x.last, P01s.last)
+  given List[Solution] = List(P04x.length, P04s.length,
+    P04s.lengthAlt1, P04s.lengthAlt2, P04s.lengthAlt3, P04s.lengthAlt4)
 
-  "A solution to problem 1" - {
+  "A solution to problem 4" - {
 
     "when given the example input, should return the example output" - {
 
-      def assertion(f: Solution[Int]): Unit =
-        f(List(1, 1, 2, 3, 5, 8)).rightValue shouldBe 8
+      def assertion(f: Solution): Unit =
+        f(List(1, 1, 2, 3, 5, 8)).rightValue shouldBe 6
 
       test(assertion)
     }
 
-    "when given a non-empty list as input, should return that list's last element" - {
+    "when given a list as input, should return that list's length" - {
 
-      def assertion(f: Solution[Int]): Unit =
-        forAll((arbIntList, "base"), (arbInt, "lastElem")) {
-          (base, lastElem) => f(base :+ lastElem).rightValue shouldBe lastElem
+      def assertion(f: Solution): Unit =
+        forAll((arbIntList, "l")) {
+          (l) => f(l).rightValue shouldBe l.length
         }
-
-      test(assertion)
-    }
-
-    "when given an empty list as input, should return an error" - {
-
-      def assertion(f: Solution[Any]): Unit =
-        f(Nil).leftValue shouldBe an[S399Error]
 
       test(assertion)
     }

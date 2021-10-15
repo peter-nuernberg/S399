@@ -23,7 +23,7 @@ package s399
  * @example
  * {{{
  *   scala> pack(List(1, 1, 1, 1, 2, 3, 3, 1, 1, 4, 5, 5, 5, 5))
- *   res0: List[List[Int]] = List(List(1, 1, 1, 1), List(2), List(3, 3), List(1, 1), List(4), List(5, 5, 5, 5))
+ *   val res0: s399.Result[List[List[Int]]] = Right(List(List(1, 1, 1, 1), List(2), List(3, 3), List(1, 1), List(4), List(5, 5, 5, 5)))
  * }}}
  */
 trait P09:
@@ -39,17 +39,11 @@ trait P09:
    */
   def pack[A](as: List[A]): Result[List[List[A]]]
 
-/**
- * The exercise solution to P09.
- */
+/** The exercise solution to [[P09]]. */
 object P09x extends P09 :
 
   // TODO: add your implementation here
   override def pack[A](as: List[A]): Result[List[List[A]]] = ???
 
-  /**
-   * Driver.
-   *
-   * A main method that executes the exercise solution above on the sample input.
-   */
+  /** A main method that executes the exercise solution above on the sample input. */
   @main def p09xmain: Unit = println(pack(List(1, 1, 1, 1, 2, 3, 3, 1, 1, 4, 5, 5, 5, 5)))

@@ -23,7 +23,7 @@ package s399
  * @example
  * {{{
  *   scala> flatten(List(List(1, 1), 2, List(3, List(5, 8))))
- *   res0: List[Int] = List(1, 1, 2, 3, 5, 8)
+ *   val res0: s399.Result[List[Int]] = Right(List(1, 1, 2, 3, 5, 8))
  * }}}
  */
 trait P07:
@@ -49,19 +49,13 @@ trait P07:
    *         order in which they would appear in a depth-first seach, or an error if a leaf element of a type other than
    *         `A` was encountered
    */
-  def flatten[A](l: List[_]): Result[List[A]]
+  def flatten(l: List[_]): Result[List[_]]
 
-/**
- * The exercise solution to P07.
- */
+/** The exercise solution to [[P07]]. */
 object P07x extends P07 :
 
   // TODO: add your implementation here
-  override def flatten[A](l: List[_]): Result[List[A]] = ???
+  override def flatten(l: List[_]): Result[List[_]] = ???
 
-  /**
-   * Driver.
-   *
-   * A main method that executes the exercise solution above on the sample input.
-   */
+  /** A main method that executes the exercise solution above on the sample input. */
   @main def p07xmain: Unit = println(flatten(List(List(1, 1), 2, List(3, List(5, 8)))))

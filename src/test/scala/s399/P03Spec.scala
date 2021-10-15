@@ -8,7 +8,8 @@ class P03Spec extends BaseSpec {
 
   type Solution[A] = (Int, List[A]) => Result[A]
 
-  given[A]: (Solution[A], Solution[A]) = (P03x.nth, P03s.nth)
+  given[A]: List[Solution[A]] = List(P03x.nth, P03s.nth,
+    P03s.nthAlt1)
 
   "A solution to problem 3" - {
 
@@ -30,8 +31,8 @@ class P03Spec extends BaseSpec {
         yield (n, l)
 
       def assertion(f: Solution[Int]): Unit =
-        forAll((legalPositiveIndexAndList, "(n,l)")) {
-          case (n, l) => f(n, l).rightValue shouldBe l(n)
+        forAll((legalPositiveIndexAndList, "(n, l)")) {
+          (n, l) => f(n, l).rightValue shouldBe l(n)
         }
 
       test(assertion)
@@ -47,8 +48,8 @@ class P03Spec extends BaseSpec {
         yield (n, l)
 
       def assertion(f: Solution[Int]): Unit =
-        forAll((legalNegativeIndexAndList, "(n,l)")) {
-          case (n, l) => f(n, l).rightValue shouldBe l(l.length + n)
+        forAll((legalNegativeIndexAndList, "(n, l)")) {
+          (n, l) => f(n, l).rightValue shouldBe l(l.length + n)
         }
 
       test(assertion)
@@ -64,8 +65,8 @@ class P03Spec extends BaseSpec {
         yield (o + nn, l)
 
       def assertion(f: Solution[Int]): Unit =
-        forAll((illegalPositiveIndexAndList, "(n,l)")) {
-          case (n, l) => f(n, l).leftValue shouldBe an[S399Error]
+        forAll((illegalPositiveIndexAndList, "(n, l)")) {
+          (n, l) => f(n, l).leftValue shouldBe an[S399Error]
         }
 
       test(assertion)
@@ -81,8 +82,8 @@ class P03Spec extends BaseSpec {
         yield (-(o + nn), l)
 
       def assertion(f: Solution[Int]): Unit =
-        forAll((illegalNegativeIndexAndList, "(n,l)")) {
-          case (n, l) => f(n, l).leftValue shouldBe an[S399Error]
+        forAll((illegalNegativeIndexAndList, "(n, l)")) {
+          (n, l) => f(n, l).leftValue shouldBe an[S399Error]
         }
 
       test(assertion)

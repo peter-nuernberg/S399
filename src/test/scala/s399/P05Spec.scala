@@ -19,37 +19,30 @@ package s399
 
 import s399.solutions.*
 
-/** The specification of the behavior of a correct solution to [[P01]]. */
-class P01Spec extends BaseSpec {
+/** The specification of the behavior of a correct solution to [[P05]]. */
+class P05Spec extends BaseSpec {
 
-  type Solution[A] = List[A] => Result[A]
+  type Solution[A] = List[A] => Result[List[A]]
 
-  given[A]: List[Solution[A]] = List(P01x.last, P01s.last)
+  given[A]: List[Solution[A]] = List(P05x.reverse, P05s.reverse,
+    P05s.reverseAlt1)
 
-  "A solution to problem 1" - {
+  "A solution to problem 5" - {
 
     "when given the example input, should return the example output" - {
 
       def assertion(f: Solution[Int]): Unit =
-        f(List(1, 1, 2, 3, 5, 8)).rightValue shouldBe 8
+        f(List(1, 1, 2, 3, 5, 8)).rightValue shouldBe List(8, 5, 3, 2, 1, 1)
 
       test(assertion)
     }
 
-    "when given a non-empty list as input, should return that list's last element" - {
+    "when given a list as input, should return the reverse of that list" - {
 
       def assertion(f: Solution[Int]): Unit =
-        forAll((arbIntList, "base"), (arbInt, "lastElem")) {
-          (base, lastElem) => f(base :+ lastElem).rightValue shouldBe lastElem
+        forAll((arbIntList, "l")) {
+          (l) => f(l).rightValue shouldBe l.reverse
         }
-
-      test(assertion)
-    }
-
-    "when given an empty list as input, should return an error" - {
-
-      def assertion(f: Solution[Any]): Unit =
-        f(Nil).leftValue shouldBe an[S399Error]
 
       test(assertion)
     }

@@ -28,14 +28,18 @@ object P01s extends P01 :
    *
    * The standard library provides the built-in [[scala.collection.immutable.List.last]] method,
    * but this solution implements this functionality "from scratch".
-   * We have a tail recursive function with two exits and one recursive case.
+   * (In general, many of these problems can make good use of the functions the standard library provides,
+   * but I will make as little use of these as possible in these solutions.)
+   *
+   * Here, we have a tail recursive function with two exits and one recursive case.
    *
    *   1. EXIT: If the given list is empty (i.e., matches the pattern `case Nil`),
-   *      there is no last element, se we return an error.
+   *      there is no last element, so the method returns an error.
    *   1. EXIT: If the given list has exactly 1 element (i.e., matches the pattern `case h :: Nil`),
-   *      the only element in the list (`h`, for "head") is the last element, so we return it.
+   *      the only element in the list (`h`, for "head") is the last element, so the method returns it.
    *   1. RECURSE: If the given list has more than 1 element (i.e., matches `case _ :: t` -- `t` cannot be `Nil` since
-   *      we passed through the case above), we call `last` on everything but the first element (`t` for "tail").
+   *      the case above didn't match), the method calls `last` on everything but the first element (`t` for
+   *      "tail").
    *
    * This pattern of processing a list with a tail-recursive case matching function will be repeated often in the other
    * provided solutions.

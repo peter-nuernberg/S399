@@ -65,24 +65,45 @@ trait BaseSpec extends AnyFreeSpec
     with Matchers
     with ScalaCheckPropertyChecks :
 
+  /** A generator of arbitrary characters. */
+  val arbChar: Gen[Char] = Arbitrary.arbChar.arbitrary
+
   /** A generator of arbitrary integers. */
   val arbInt: Gen[Int] = Arbitrary.arbInt.arbitrary
 
   /** A generator of arbitrary length (possibly empty) lists of arbitrary integers. */
   val arbIntList: Gen[List[Int]] = Gen.listOf(arbInt)
 
+//  /**
+//   * Tests the given assertion against a pair of solutions (assumed to be the exercise and provided solutions).
+//   *
+//   * @param a   the assertion to be tested
+//   * @param fns the solutions to be tested
+//   * @tparam A the type of input taken by a solution
+//   * @tparam B the type of output produced by a solution
+//   */
+//  def test[S](a: S => Unit)(using fns: (S, S)): Unit =
+//    val (x, p) = fns
+//    "(exercise solution)" taggedAs (ExerciseSolution) in a(x)
+//    "(provided solution)" taggedAs (ProvidedSolution) in a(p)
+
   /**
    * Tests the given assertion against a pair of solutions (assumed to be the exercise and provided solutions).
    *
-   * @param assertion the assertion to be tested
-   * @param fns       the solutions to be tested
+   * @param a   the assertion to be tested
+   * @param fns the solutions to be tested
    * @tparam A the type of input taken by a solution
    * @tparam B the type of output produced by a solution
    */
-  def test[S](assertion: S => Unit)(using fns: (S, S)): Unit =
-    val (exercise, provided) = fns
-    "(exercise solution)" taggedAs (ExerciseSolution) in assertion(exercise)
-    "(provided solution)" taggedAs (ProvidedSolution) in assertion(provided)
+  def test[S](a: S => Unit)(using ss: List[S]): Unit =
+    SolutionType.iterator(ss).foreach {
+      si =>
+          si.st.tags match
+            case Nil => si.st.name in a(si.s)
+            case t :: Nil => si.st.name taggedAs (t) in a(si.s)
+            case t1 :: t2 :: Nil => si.st.name taggedAs (t1, t2) in a(si.s)
+            case _ => throw new Exception()
+    }
 
   /**
    * Extension methods for an instance of [[Either]].
@@ -93,10 +114,10 @@ trait BaseSpec extends AnyFreeSpec
    */
   extension[A, B] (e: Either[A, B])(using pos: source.Position)
 
-    /**
-     * Returns the left side of the given either, or throws a [[TestFailedException]] if the given either is
-     * right-sided.
-     */
+  /**
+   * Returns the left side of the given either, or throws a [[TestFailedException]] if the given either is
+   * right-sided.
+   */
     def leftValue: A =
       e.fold(
         identity,
@@ -119,9 +140,9 @@ trait BaseSpec extends AnyFreeSpec
    */
   extension[A] (o: Option[A])(using pos: source.Position)
 
-    /**
-     * Returns the inside of the given option, or throws a [[TestFailedException]] if the given option is empty.
-     */
+  /**
+   * Returns the inside of the given option, or throws a [[TestFailedException]] if the given option is empty.
+   */
     def value: A =
       o.fold(throw new TestFailedException(_ => Some("empty option does not have a value"), None, pos))(identity)
 
@@ -130,3 +151,23 @@ object ExerciseSolution extends Tag("s399.ExerciseSolution")
 
 /** A scalatest tag for tests of provided solutions. */
 object ProvidedSolution extends Tag("s399.ProvidedSolution")
+
+/** A scalatest tag for tests of primary provided solutions. */
+object PrimarySolution extends Tag("s399.PrimarySolution")
+
+/** A scalatest tag for tests of alternate provided solutions. */
+object AlternateSolution extends Tag("s399.AlternateSolution")
+
+final case class SolutionType(name: String, tags: List[Tag])
+
+final case class SolutionInfo[S](st: SolutionType, s: S)
+
+object SolutionType:
+
+  def stIterator: Iterator[SolutionType] =
+    Iterator.single(SolutionType("(exercise solution)", List(ExerciseSolution))) ++
+        Iterator.single(SolutionType("(provided solution)", List(ProvidedSolution, PrimarySolution))) ++
+        Iterator.from(1).map(i => SolutionType(s"(alternate solution $i)", List(ProvidedSolution, AlternateSolution)))
+
+  def iterator[S](ss: List[S]): Iterator[SolutionInfo[S]] =
+    stIterator.zip(ss).map(SolutionInfo.apply)

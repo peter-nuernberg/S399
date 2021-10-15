@@ -23,7 +23,7 @@ package s399
  * @example
  * {{{
  *   scala> reverse(List(1, 1, 2, 3, 5, 8))
- *   res0: List[Int] = List(8, 5, 3, 2, 1, 1)
+ *   val res0: s399.Result[List[Int]] = Right(List(8, 5, 3, 2, 1, 1))
  * }}}
  */
 trait P05:
@@ -37,17 +37,11 @@ trait P05:
    */
   def reverse[A](as: List[A]): Result[List[A]]
 
-/**
- * The exercise solution to P05.
- */
-object P05x extends P05:
+/** The exercise solution to P05. */
+object P05x extends P05 :
 
   // TODO: add your implementation here
   override def reverse[A](as: List[A]): Result[List[A]] = ???
 
-  /**
-   * Driver.
-   *
-   * A main method that executes the exercise solution above on the sample input.
-   */
+  /** A main method that executes the exercise solution above on the sample input. */
   @main def p05xmain: Unit = println(reverse(List(1, 1, 2, 3, 5, 8)))

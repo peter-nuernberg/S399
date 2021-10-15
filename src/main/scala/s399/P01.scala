@@ -23,7 +23,7 @@ package s399
  * @example
  * {{{
  *   scala> last(List(1, 1, 2, 3, 5, 8))
- *   res0: Either[S399Error, Int] = Right(8)
+ *   val res0: s399.Result[Int] = Right(8)
  * }}}
  */
 trait P01:

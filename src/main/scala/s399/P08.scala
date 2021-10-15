@@ -25,7 +25,7 @@ package s399
  * @example
  * {{{
  *   scala> compress(List(1, 1, 1, 1, 2, 3, 3, 1, 1, 4, 5, 5, 5, 5))
- *   res0: List[Int] = List(1, 2, 3, 1, 4, 5)
+ *   val res0: s399.Result[List[Int]] = Right(List(1, 2, 3, 1, 4, 5))
  * }}}
  */
 trait P08:
@@ -41,17 +41,11 @@ trait P08:
    */
   def compress[A](as: List[A]): Result[List[A]]
 
-/**
- * The exercise solution to P08.
- */
+/** The exercise solution to [[P08]]. */
 object P08x extends P08 :
 
   // TODO: add your implementation here
   override def compress[A](as: List[A]): Result[List[A]] = ???
 
-  /**
-   * Driver.
-   *
-   * A main method that executes the exercise solution above on the sample input.
-   */
+  /** A main method that executes the exercise solution above on the sample input. */
   @main def p08xmain: Unit = println(compress(List(1, 1, 1, 1, 2, 3, 3, 1, 1, 4, 5, 5, 5, 5)))

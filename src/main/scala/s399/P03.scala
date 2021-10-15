@@ -18,31 +18,31 @@
 package s399
 
 /**
- * P03. (*) Find the _n_ th element of a list.
+ * P03. (*) Find the *n*th element of a list.
  *
  * By convention, the first element in the list is element 0.
  *
  * @example
  * {{{
  *   scala> nth(2, List(1, 1, 2, 3, 5, 8))
- *   res0: Either[S399Error, Int] = Right(2)
+ *   val res0: s399.Result[Int] = Right(2)
  * }}}
  */
 trait P03:
 
   /**
-   * Returns the _n_ th element of a list.
+   * Returns the *n*th element of a list.
    *
-   * For non-negative _n_, the _n_ th element of the list refers to the _n_ th element from the left, 0 indexed.
-   * For negative _n_, the Kth element of the list refers to the _n_ th element from the right, 1 indexed.
-   * For a list of length _l_, providing an index outside the range [-_l_ .. _l_-1] should result in an error.
+   * For non-negative *n*, the *n*th element of the list refers to the *n*th element from the left, 0 indexed.
+   * For negative *n*, the *n*th element of the list refers to the *n*th element from the right, 1 indexed.
+   * For a list of length *l*, providing an index outside the range [-*l* .. *l*-1] should result in an error.
    *
    * @param n  the index of the element to return
    * @param as the list to be indexed
    * @tparam A the type of elements in the given list
    * @return the element corresponding to the given index, or an error if the index was out of range
    * @example
-   * Given the list `List("a", "b", "c")`, consider the following values of _n_ and their results:
+   * Given the list `List("a", "b", "c")`, consider the following values of *n* and their results:
    *
    * <table>
    * <thead>

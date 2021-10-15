@@ -25,7 +25,7 @@ package s399
  * @example
  * {{{
  *   scala> encode(List(1, 1, 1, 1, 2, 3, 3, 1, 1, 4, 5, 5, 5, 5))
- *   res0: List[(Int, Int)] = List((4,1), (1,2), (2,3), (2,1), (1,4), (4,5))
+ *   val res0: s399.Result[List[(Int, Int)]] = Right(List((4,1), (1,2), (2,3), (2,1), (1,4), (4,5)))
  * }}}
  */
 trait P10:
@@ -42,9 +42,7 @@ trait P10:
    */
   def encode[A](as: List[A]): Result[List[(Int, A)]]
 
-/**
- * The exercise solution to P10.
- */
+/** The exercise solution to [[P10]]. */
 object P10x extends P10:
 
   override val p09: P09 = P09x
@@ -52,9 +50,5 @@ object P10x extends P10:
   // TODO: add your implementation here
   override def encode[A](as: List[A]): Result[List[(Int, A)]] = ???
 
-  /**
-   * Driver.
-   *
-   * A main method that executes the exercise solution above on the sample input.
-   */
+  /** A main method that executes the exercise solution above on the sample input. */
   @main def p10xmain: Unit = println(encode(List(1, 1, 1, 1, 2, 3, 3, 1, 1, 4, 5, 5, 5, 5)))

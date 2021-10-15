@@ -24,7 +24,8 @@ class P02Spec extends BaseSpec {
 
   type Solution[A] = List[A] => Result[A]
 
-  given[A]: (Solution[A], Solution[A]) = (P02x.penultimate, P02s.penultimate)
+  given[A]: List[Solution[A]] = List(P02x.penultimate, P02s.penultimate,
+    P02s.penultimateAlt1, P02s.penultimateAlt2, P02s.penultimateAlt3)
 
   "A solution to problem 2" - {
 
