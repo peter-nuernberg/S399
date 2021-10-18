@@ -202,7 +202,7 @@ class P01Spec extends BaseSpec {
 
   type Solution[A] = List[A] => Result[A]
 
-  given [A]: (Solution[A], Solution[A]) = (P01x.last, P01s.last)
+  given [A]: List[Solution[A]] = List(P01x.last, P01s.last)
 
   "A solution to problem 1" - {
 
@@ -244,7 +244,8 @@ though you may want to add additional assertions if you are familiar with scalat
 
 At the start of the class declaration, there are two declarations:
 a type alias named `Solution` for the signature of a solution (in this case, `List[A] => Result[A]`); and,
-a given instance of a pair of solutions (namely, the exercise and provided solutions).
+a given instance of a List of solutions
+(the exercise and primary provided solutions at least, plus optionally any alternate provided solutions).
 
 This class goes on to provide three assertions concerning the behavior of a solution when given:
 
@@ -262,12 +263,18 @@ optionally also invoking generators to provide random inputs.
 the input to the solution is derived by appending the arbitrary integer to the arbitrary list,
 so that we know what the last element of the input is.)
 
-The `test` method actually registers two tests with the scalatest engine.
-The first is named "(exercise solution)" and is tagged with `s399.ExerciseSolution`.
-The second is named "(provided solution)" and is tagged with `s399.ProvidedSolution`.
+The `test` method actually registers several tests with the scalatest engine,
+one per element in the given solution list.
+The first, which refers to the first element in the given solution list,
+is named "(exercise solution)" and is tagged with `s399.ExerciseSolution`.
+The second, which refers to the second element in the given solution list,
+is named "(provided solution)" and is tagged with `s399.ProvidedSolution` and `s399.PrimarySolution`.
+Remaining "alternate" solutions are named "(alternate solution *n*)"
+and are tagged with `s399.ProvidedSolution` and `s399.AlternateSolution`.
+
 The assertion provided as an argument is run against each solution.
 This means if you execute all the tests in this package when you first clone the repository,
-scalatest should mark half as failing and half as succeeding
+scalatest should mark some as failing and some as succeeding
 (representing the exercise and provided solutions, respectively).
 If you want to run tests only against the exercise or provided solutions,
 you can pass arguments to the scalatest runner to do so.
