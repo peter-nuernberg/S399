@@ -32,7 +32,7 @@ object P09s extends P09 :
    * When the auxilliary method examines the head of the input, it recurses by either prepending the head to the current
    * list being built (if it is the same as the head element in that list) and leaving the accumulator the same;
    * or, it prepends eth current list to the accumulator and starts a new current list containing the head.
-   * At the end of the input, teh current list must be prepended to the accumulator before it is reversed and returned.
+   * At the end of the input, the current list must be prepended to the accumulator before it is reversed and returned.
    */
   override def pack[A](as: List[A]): Result[List[List[A]]] =
     @tailrec

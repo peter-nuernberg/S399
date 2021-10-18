@@ -76,7 +76,6 @@ class P09Spec extends BaseSpec {
             val base = scala.util.Random.shuffle((1 to n).toList)
             val out = base.map(i => List.fill(i)(i))
             val in = out.flatten
-            println(s"n=$n, base=$base, out=$out, in=$in")
             f(in).rightValue shouldBe out
         }
 
