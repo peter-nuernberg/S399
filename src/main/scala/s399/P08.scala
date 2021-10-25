@@ -42,10 +42,10 @@ trait P08:
   def compress[A](as: List[A]): Result[List[A]]
 
 /** The exercise solution to [[P08]]. */
-object P08x extends P08 :
+object X08 extends P08 :
 
   // TODO: add your implementation here
   override def compress[A](as: List[A]): Result[List[A]] = ???
 
   /** A main method that executes the exercise solution above on the sample input. */
-  @main def p08xmain: Unit = println(compress(List(1, 1, 1, 1, 2, 3, 3, 1, 1, 4, 5, 5, 5, 5)))
+  @main def x08main: Unit = println(compress(List(1, 1, 1, 1, 2, 3, 3, 1, 1, 4, 5, 5, 5, 5)))

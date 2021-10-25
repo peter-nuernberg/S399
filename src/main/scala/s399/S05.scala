@@ -16,18 +16,17 @@
  * limitations under the License.
  */
 package s399
-package solutions
 
 import scala.annotation.tailrec
 
 /** The provided solution to [[P05]]. */
-object P05s extends P05 :
+object S05 extends P05 :
 
   /**
    * Returns the given list in reverse order.
    *
    * Here, we have an auxilliary inner method with an accumulator to allow us to write a tail recursive solution.
-   * For a non-tail-recursive alternate solution, see [[P05s.reverseAlt1]].
+   * For a non-tail-recursive alternate solution, see [[D105]].
    *
    * The construction of the inner tail-recursive method for this problem is similar to that of the auxilliary for
    * [[P04]].
@@ -37,6 +36,7 @@ object P05s extends P05 :
    * the recursive call on the tail of the list being processed.
    */
   override def reverse[A](as: List[A]): Result[List[A]] =
+
     @tailrec
     def aux(rest: List[A], acc: List[A] = Nil): List[A] =
       rest match
@@ -45,11 +45,23 @@ object P05s extends P05 :
 
     Right(aux(as))
 
-  /** A non-tail-recursive alternate solution. */
-  def reverseAlt1[A](as: List[A]): Result[List[A]] =
+  /** A main method that executes the provided solution above on the sample input. */
+  @main def s05main: Unit = println(reverse(List(1, 1, 2, 3, 5, 8)))
+
+// === PRACTICE SOLUTION 1 ===
+
+/** The first practice solution to [[P05]]. */
+object D105 extends P05 :
+
+  /**
+   * Returns the given list in reverse order.
+   *
+   * This is a non-tail-recursive solution.
+   */
+  override def reverse[A](as: List[A]): Result[List[A]] =
     as match
       case Nil => Right(Nil)
       case h :: t => reverse(t).map(_ :+ h)
 
-  /** A main method that executes the provided solution above on the sample input. */
-  @main def p05smain: Unit = println(reverse(List(1, 1, 2, 3, 5, 8)))
+  /** A main method that executes the first alternate solution above on the sample input. */
+  @main def d105main: Unit = println(reverse(List(1, 1, 2, 3, 5, 8)))

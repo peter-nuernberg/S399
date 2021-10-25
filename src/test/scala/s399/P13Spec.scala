@@ -19,59 +19,47 @@ package s399
 
 import org.scalacheck.Gen
 
-/** The specification of the behavior of a correct solution to [[P09]]. */
-class P09Spec extends BaseSpec :
+/** The specification of the behavior of a correct solution to [[P13.encodeDirect]]. */
+class P13Spec extends BaseSpec :
 
   // === ASSERTIONS ===
 
-  "A solution to problem 9" - {
+  "A solution to problem 13" - {
 
     "when given the example input, should return the example output" - {
 
       def assertion(f: Solution[Int]): Unit =
         f(List(1, 1, 1, 1, 2, 3, 3, 1, 1, 4, 5, 5, 5, 5)).rightValue shouldBe List(
-          List(1, 1, 1, 1), List(2), List(3, 3), List(1, 1), List(4), List(5, 5, 5, 5))
+          (4,1), (1,2), (2,3), (2,1), (1,4), (4,5))
 
       test(assertion)
     }
 
-    "when given an empty list as input, should return list containing the empty list" - {
+    "when given an empty list, should return an empty list" - {
 
       def assertion(f: Solution[Any]): Unit =
-        f(Nil).rightValue shouldBe List(Nil)
+        f(Nil).rightValue shouldBe Nil
 
       test(assertion)
     }
 
-    "when given a list with a single element as input, should return list containing that list" - {
+    "when given a list with a single repeated element, should return the expected result" - {
 
       def assertion(f: Solution[Int]): Unit =
-        forAll((arbInt, "a")) {
-            (a) => f(List(a)).rightValue shouldBe List(List(a))
+        forAll((arbInt, "i"), (arbSmallPosInt, "n")) {
+          (i, n) => f(List.fill(n)(i)).rightValue shouldBe List((n, i))
         }
 
       test(assertion)
     }
 
-    "when given a list with a single repeated element as input, should return list containing that list" - {
-
-      def assertion(f: Solution[Int]): Unit =
-        forAll((arbSmallPosInt2Plus, "a")) {
-          (a) =>
-            val in = List.fill(a)(a)
-            f(in).rightValue shouldBe List(in)
-        }
-
-      test(assertion)
-    }
-
-    "when given a list with a several repeated element as input, should return the expected list" - {
+    "when given a list with multiple repeated elements, should return the expected result" - {
 
       def assertion(f: Solution[Int]): Unit =
         forAll((arbShuffledIntList, "(seed, l)")) {
           (_, base) =>
-            val out = base.map(i => List.fill(i)(i))
-            val in = out.flatten
+            val in = base.flatMap(i => List.fill(i)(i))
+            val out = base.map(i => (i, i))
             f(in).rightValue shouldBe out
         }
 
@@ -81,9 +69,10 @@ class P09Spec extends BaseSpec :
 
   // === INFRASTRUCTURE ===
 
-  type Solution[A] = List[A] =*=> List[List[A]]
+  type Solution[A] = List[A] => Result[List[(Int, A)]]
 
-  given[A]: List[(S399Tag, Solution[A])] = List(
-    S399Tag.ExerciseSolution -> X09.pack,
-    S399Tag.PrimarySolution -> S09.pack,
+  given [A]: List[(S399Tag, Solution[A])] = List(
+    S399Tag.ExerciseSolution -> X13.encodeDirect,
+    S399Tag.PrimarySolution -> S13.encodeDirect,
   )
+

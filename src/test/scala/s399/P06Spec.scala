@@ -18,34 +18,11 @@
 package s399
 
 import org.scalacheck.Gen
-import s399.solutions.*
 
-/** The specification of the behavior of a correct solution to [[P06]]. */
-class P06Spec extends BaseSpec {
+/** The specification of the behavior of a correct solution to [[P06.isPalindrome]]. */
+class P06Spec extends BaseSpec :
 
-  type Solution = List[_] => Result[Boolean]
-
-  given List[Solution] = List(P06x.isPalindrome, P06s.isPalindrome,
-    P06s.isPalindromeAlt1, P06s.isPalindromeAlt2)
-
-  val evenPalindrome: Gen[List[Int]] =
-    for
-      l <- arbIntList
-    yield l ++ l.reverse
-
-  val oddPalindrome: Gen[List[Int]] =
-    for
-      l <- arbIntList
-      m <- arbInt
-    yield (l :+ m) ++ l.reverse
-
-  val palindrome: Gen[List[Int]] = Gen.oneOf(evenPalindrome, oddPalindrome)
-
-  val nonPalindrome: Gen[List[Any]] =
-    for
-      p <- palindrome
-      c <- arbChar
-    yield c :: ((1 :: p) :+ 1)
+  // === ASSERTIONS ===
 
   "A solution to problem 6" - {
 
@@ -85,4 +62,34 @@ class P06Spec extends BaseSpec {
       test(assertion)
     }
   }
-}
+
+  // === INFRASTRUCTURE ===
+
+  type Solution = List[_] =*=> Boolean
+
+  given List[(S399Tag, Solution)] = List(
+    S399Tag.ExerciseSolution -> X06.isPalindrome,
+    S399Tag.PrimarySolution -> S06.isPalindrome,
+    S399Tag.AlternateSolution -> A106.isPalindrome,
+    S399Tag.PracticeSolution -> D106.isPalindrome,
+  )
+
+  val evenPalindrome: Gen[List[Int]] =
+    for
+      l <- arbIntList
+    yield l ++ l.reverse
+
+  val oddPalindrome: Gen[List[Int]] =
+    for
+      l <- arbIntList
+      m <- arbInt
+    yield (l :+ m) ++ l.reverse
+
+  val palindrome: Gen[List[Int]] = Gen.oneOf(evenPalindrome, oddPalindrome)
+
+  val nonPalindrome: Gen[List[Any]] =
+    for
+      p <- palindrome
+      c <- arbChar
+    yield c :: ((1 :: p) :+ 1)
+

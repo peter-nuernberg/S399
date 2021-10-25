@@ -17,15 +17,10 @@
  */
 package s399
 
-import s399.solutions.*
+/** The specification of the behavior of a correct solution to [[P04.length]]. */
+class P04Spec extends BaseSpec :
 
-/** The specification of the behavior of a correct solution to [[P04]]. */
-class P04Spec extends BaseSpec {
-
-  type Solution = List[_] => Result[Int]
-
-  given List[Solution] = List(P04x.length, P04s.length,
-    P04s.lengthAlt1, P04s.lengthAlt2, P04s.lengthAlt3, P04s.lengthAlt4)
+  // === ASSERTIONS ===
 
   "A solution to problem 4" - {
 
@@ -47,4 +42,16 @@ class P04Spec extends BaseSpec {
       test(assertion)
     }
   }
-}
+
+  // === INFRASTRUCTURE ===
+
+  type Solution = List[_] =*=> Int
+
+  given List[(S399Tag, Solution)] = List(
+    S399Tag.ExerciseSolution -> X04.length,
+    S399Tag.PrimarySolution -> S04.length,
+    S399Tag.AlternateSolution -> A104.length,
+    S399Tag.AlternateSolution -> A204.length,
+    S399Tag.AlternateSolution -> A304.length,
+    S399Tag.PracticeSolution -> D104.length,
+  )

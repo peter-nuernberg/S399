@@ -16,19 +16,37 @@
  * limitations under the License.
  */
 package s399
-package solutions
-
-import scala.annotation.tailrec
 
 /** The provided solution to [[P10]]. */
-object P10s extends P10 :
+object S10 extends P10 :
 
-  override val p09: P09 = P09s
+  /** The solution to [[P09]] used by [[S10.encode]] by default. */
+  given P09 = S09
 
   /**
    * Returns a run-length encoding of the given list.
    *
    * The method itself is fairly straightforward if it builds upon [[P09]].
+   * But first, a note about `given` and `using`.
+   * In Scala 2, the word `implicit` was used all over the place to mean many things.
+   * In Scala 3, some of these uses have been replaced by `given` and `using`.
+   * Note that `encode` actually takes two parameter lists.
+   * The first is the list the method will process.
+   * The second is the implementation of `P09` the method will use (to call `pack`).
+   * But, if you see the [[S10.s10main]] call to `encode`, it does not provide anything for the second parameter list.
+   * If you play around a bit, you'll not you *can* provide an implementation, so `encode(List(1, 2, 3))(S09)`, e.g.,
+   * certainly works.
+   * If the call site does not provide a value for `using` parameters, the compiler will look for `given` values that
+   * would fit and are in scope.
+   * This is a pretty extensive subject, but the idea is that, for many cases, the value for `using` parameters does
+   * not change much.
+   * For example, [[scala.collection.immutable.List.sorted]] takes an "implicit" ordering parameter (which, in Scala 3,
+   * is declared by `using`).
+   * For example, if we write `val l = List(1, 3, 2).sorted`, the compiler fills in the value for the ordering of `Int`s
+   * for us, which (luckily) does what we (probably) want it to.
+   * So, somewhere, there is a `Ordering[Int]` that specifies how to order integers (by default).
+   * In this object, we define a "default" instance of `P09` (namely, [[S09]]), by writing `given P09 = S09`.
+   *
    * Recall that [[P09.pack]] takes a `List[A]` and returns a `List[List[A]]`,
    * where runs of identical elements are placed within sublists.
    * This method maps essentially maps each of those sublists into a 2-tuple,
@@ -53,8 +71,8 @@ object P10s extends P10 :
    *      If you want to explore more, note that `flatMap` on `List` actually takes a function that generates an
    *      [[scala.collection.IterableOnce]], which both `List` and `Option` implement.
    */
-  override def encode[A](as: List[A]): Result[List[(Int, A)]] =
+  override def encode[A](as: List[A])(using p09: P09): Result[List[(Int, A)]] =
     p09.pack(as).map(_.flatMap(l => l.headOption.map(h => (l.length, h))))
 
   /** A main method that executes the provided solution above on the sample input. */
-  @main def p10smain: Unit = println(encode(List(1, 1, 1, 1, 2, 3, 3, 1, 1, 4, 5, 5, 5, 5)))
+  @main def s10main: Unit = println(encode(List(1, 1, 1, 1, 2, 3, 3, 1, 1, 4, 5, 5, 5, 5)))

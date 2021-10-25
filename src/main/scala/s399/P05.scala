@@ -37,11 +37,11 @@ trait P05:
    */
   def reverse[A](as: List[A]): Result[List[A]]
 
-/** The exercise solution to P05. */
-object P05x extends P05 :
+/** The exercise solution to [[P05]]. */
+object X05 extends P05 :
 
   // TODO: add your implementation here
   override def reverse[A](as: List[A]): Result[List[A]] = ???
 
   /** A main method that executes the exercise solution above on the sample input. */
-  @main def p05xmain: Unit = println(reverse(List(1, 1, 2, 3, 5, 8)))
+  @main def x05main: Unit = println(reverse(List(1, 1, 2, 3, 5, 8)))

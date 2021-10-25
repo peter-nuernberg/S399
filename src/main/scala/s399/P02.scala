@@ -38,11 +38,11 @@ trait P02:
    */
   def penultimate[A](as: List[A]): Result[A]
 
-/** The exercise solution to P02. */
-object P02x extends P02:
+/** The exercise solution to [[P02]]. */
+object X02 extends P02 :
 
   // TODO: add your implementation here
   override def penultimate[A](as: List[A]): Result[A] = ???
 
   /** A main method that executes the exercise solution above on the sample input. */
-  @main def p02xmain: Unit = println(penultimate(List(1, 1, 2, 3, 5, 8)))
+  @main def x02main: Unit = println(penultimate(List(1, 1, 2, 3, 5, 8)))

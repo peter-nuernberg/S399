@@ -18,15 +18,11 @@
 package s399
 
 import org.scalacheck.Gen
-import s399.solutions.*
 
-/** The specification of the behavior of a correct solution to [[P07]]. */
-class P07Spec extends BaseSpec {
+/** The specification of the behavior of a correct solution to [[P07.flatten]]. */
+class P07Spec extends BaseSpec :
 
-  type Solution = List[_] => Result[_]
-
-  given List[Solution] = List(P07x.flatten, P07s.flatten,
-    P07s.flattenAlt1)
+  // === ASSERTIONS ===
 
   "A solution to problem 7" - {
 
@@ -68,4 +64,14 @@ class P07Spec extends BaseSpec {
       test(assertion)
     }
   }
-}
+
+  // === INFRASTRUCTURE ===
+
+  type Solution = List[_] =*=> Any
+
+  given List[(S399Tag, Solution)] = List(
+    S399Tag.ExerciseSolution -> X07.flatten,
+    S399Tag.PrimarySolution -> S07.flatten,
+    S399Tag.AlternateSolution -> A107.flatten,
+  )
+

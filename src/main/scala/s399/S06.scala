@@ -16,12 +16,9 @@
  * limitations under the License.
  */
 package s399
-package solutions
-
-import cats.implicits.*
 
 /** The provided solution to [[P06]]. */
-object P06s extends P06 :
+object S06 extends P06 :
 
   /**
    * Indicates whether the given list is a palindrome.
@@ -70,16 +67,41 @@ object P06s extends P06 :
           .take(l.length / 2)
           .foldLeft(true)(_ & _))
 
-  /** An alternate solution that uses the built-in reverse (could also use the reverse implemented in P05.) */
-  def isPalindromeAlt1(l: List[_]): Result[Boolean] =
+  /** A main method that executes the provided solution above on the sample input. */
+  @main def s06main: Unit = println(isPalindrome(List(1, 2, 3, 2, 1)))
+
+// === ALTERNATE SOLUTION 1 ===
+
+/** The first alternate solution to [[P06]]. */
+object A106 extends P06 :
+
+  /**
+   * Indicates whether the given list is a palindrome.
+   *
+   * This alternate solution that uses the built-in reverse (could also use the reverse implemented in [[P05]].)
+   */
+  override def isPalindrome(l: List[_]): Result[Boolean] =
     Right(l == l.reverse)
 
-  /** An alternate solution that uses a `for` loop for iteration and a variable accumulator. */
-  def isPalindromeAlt2(l: List[_]): Result[Boolean] =
+  /** A main method that executes the first alternate solution above on the sample input. */
+  @main def a106main: Unit = println(isPalindrome(List(1, 2, 3, 2, 1)))
+
+// === PRACTICE SOLUTION 1 ===
+
+/** The first practice solution to [[P06]]. */
+object D106 extends P06 :
+
+  /**
+   * Indicates whether the given list is a palindrome.
+   *
+   * This alternate solution uses a variable accumulator.
+   * Writing a solution in this way can sometimes be simpler than writing a solution that does not use variables.
+   */
+  override def isPalindrome(l: List[_]): Result[Boolean] =
     var acc: Boolean = true
     for (i <- 0 until l.length / 2)
       acc &= l(i) == l(l.length - i - 1)
     Right(acc)
 
   /** A main method that executes the provided solution above on the sample input. */
-  @main def p06smain: Unit = println(isPalindrome(List(1, 2, 3, 2, 1)))
+  @main def d106main: Unit = println(isPalindrome(List(1, 2, 3, 2, 1)))

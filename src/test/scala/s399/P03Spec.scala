@@ -1,15 +1,28 @@
+/*
+ * Scala 99 problems
+ *
+ * Copyright 2021 Peter J. Nuernberg
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package s399
 
 import org.scalacheck.Gen
-import s399.solutions.*
 
-/** The specification of the behavior of a correct solution to [[P03]]. */
-class P03Spec extends BaseSpec {
+/** The specification of the behavior of a correct solution to [[P03.nth]]. */
+class P03Spec extends BaseSpec :
 
-  type Solution[A] = (Int, List[A]) => Result[A]
-
-  given[A]: List[Solution[A]] = List(P03x.nth, P03s.nth,
-    P03s.nthAlt1)
+  // === ASSERTIONS ===
 
   "A solution to problem 3" - {
 
@@ -89,4 +102,13 @@ class P03Spec extends BaseSpec {
       test(assertion)
     }
   }
-}
+
+  // === INFRASTRUCTURE ===
+
+  type Solution[A] = (Int, List[A]) =*=> A
+
+  given[A]: List[(S399Tag, Solution[A])] = List(
+    S399Tag.ExerciseSolution -> X03.nth,
+    S399Tag.PrimarySolution -> S03.nth,
+    S399Tag.AlternateSolution -> A103.nth,
+  )

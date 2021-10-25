@@ -16,12 +16,11 @@
  * limitations under the License.
  */
 package s399
-package solutions
 
 import scala.annotation.tailrec
 
 /** The provided solution to [[P03]]. */
-object P03s extends P03:
+object S03 extends P03:
 
   /**
    * Returns the *n*th element of a list.
@@ -55,17 +54,30 @@ object P03s extends P03:
     else
       nth(n - 1, as.tail)
 
-  /** An alternative solution that avoids calls to `head` and `tail`.` */
+  /** A main method that executes the provided solution above on the sample input. */
+  @main def s03main: Unit = println(nth(2, List(1, 1, 2, 3, 5, 8)))
+
+// === ALTERNATE SOLUTION 1 ===
+
+/** The first alternate solution to [[P03]]. */
+object A103 extends P03 {
+
+  /**
+   * Returns the *n*th element of a list.
+   *
+   * This method avoids calls toe `head` and `tail` that can fail.
+   */
   @tailrec
-  def nthAlt1[A](n: Int, as: List[A]): Result[A] =
+  override def nth[A](n: Int, as: List[A]): Result[A] =
     if n < 0 then
-      nthAlt1(-n - 1, as.reverse)
+      nth(-n - 1, as.reverse)
     else if n == 0 then
       as.headOption.toRight(S399Error("list is to short"))
     else
       as match
-        case _ :: t => nthAlt1(n - 1, t)
+        case _ :: t => nth(n - 1, t)
         case _ => Left(S399Error("list is to short"))
 
-  /** A main method that executes the provided solution above on the sample input. */
-  @main def p03smain: Unit = println(nth(2, List(1, 1, 2, 3, 5, 8)))
+  /** A main method that executes the first alternate solution above on the sample input. */
+  @main def a103main: Unit = println(nth(2, List(1, 1, 2, 3, 5, 8)))
+}

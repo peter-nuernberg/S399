@@ -19,22 +19,22 @@ package s399
 
 import org.scalacheck.Gen
 
-/** The specification of the behavior of a correct solution to [[P08.compress]]. */
-class P08Spec extends BaseSpec :
+/** The specification of the behavior of a correct solution to [[P14.duplicate]]. */
+class P14Spec extends BaseSpec :
 
   // === ASSERTIONS ===
 
-  "A solution to problem 8" - {
+  "A solution to problem 14" - {
 
     "when given the example input, should return the example output" - {
 
       def assertion(f: Solution[Int]): Unit =
-        f(List(1, 1, 1, 1, 2, 3, 3, 1, 1, 4, 5, 5, 5, 5)).rightValue shouldBe List(1, 2, 3, 1, 4, 5)
+        f(List(1, 2, 3, 3, 4)).rightValue shouldBe List(1, 1, 2, 2, 3, 3, 3, 3, 4, 4)
 
       test(assertion)
     }
 
-    "when given an empty list as input, should return an empty list" - {
+    "when given an empty list, should return an empty list" - {
 
       def assertion(f: Solution[Any]): Unit =
         f(Nil).rightValue shouldBe Nil
@@ -42,14 +42,11 @@ class P08Spec extends BaseSpec :
       test(assertion)
     }
 
-    "when given a non-empty list with duplicates as input, should return that list with no duplicates" - {
+    "when given a non-empty list, should return the expected duplicated list" - {
 
       def assertion(f: Solution[Int]): Unit =
-        forAll((Gen.chooseNum(1, 10), "n")) {
-          (n) =>
-              val out = Iterator.from(1).take(n).toList
-              val in = out.flatMap(i => List(i))
-              f(in).rightValue shouldBe out
+        forAll((arbShuffledIntList, "(seed, l)")) {
+          case (_, l) => f(l).rightValue shouldBe l.flatMap{ a => List(a, a) }
         }
 
       test(assertion)
@@ -58,10 +55,10 @@ class P08Spec extends BaseSpec :
 
   // === INFRASTRUCTURE ===
 
-  type Solution[A] = List[A] =*=> List[A]
+  type Solution[A] = List[A] => Result[List[A]]
 
-  given[A]: List[(S399Tag, Solution[A])] = List(
-    S399Tag.ExerciseSolution -> X08.compress,
-    S399Tag.PrimarySolution -> S08.compress,
-    S399Tag.PracticeSolution -> A108.compress,
+  given [A]: List[(S399Tag, Solution[A])] = List(
+    S399Tag.ExerciseSolution -> X14.duplicate,
+    S399Tag.PrimarySolution -> S14.duplicate,
   )
+

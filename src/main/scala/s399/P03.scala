@@ -58,11 +58,11 @@ trait P03:
    */
   def nth[A](n: Int, as: List[A]): Result[A]
 
-/** The exercise solution to P03. */
-object P03x extends P03 :
+/** The exercise solution to [[P03]]. */
+object X03 extends P03 :
 
   // TODO: add your implementation here
   override def nth[A](n: Int, as: List[A]): Result[A] = ???
 
   /** A main method that executes the exercise solution above on the sample input. */
-  @main def p03xmain: Unit = println(nth(2, List(1, 1, 2, 3, 5, 8)))
+  @main def x03main: Unit = println(nth(2, List(1, 1, 2, 3, 5, 8)))

@@ -25,20 +25,23 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.*
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
+import scala.util.Random
+
 /**
  * A base class for all tests in this package.
  *
  * This base class contains:
  *   1. Common generators for random data;
- *   1. a `test` method that tests both the exercise and provided solutions against an assertion; and,
- *   1. extension methods for interrogating `Either` and `Option` instances.
+ *   1. a `test` method that tests given solutions against an assertion;
+ *   1. extension methods for interrogating `Either` and `Option` instances; and,
+ *   1. some custom scalatest tags.
  *
  * The following generators are defined:
  *   1. `arbInt` - generates an arbitrary integer; and,
  *   1. `arbIntList` - generates an arbitrary (possibly 0) length list of arbitrary integers.
  *
- * The `test` method takes an assertion and a pair of implicit functions.
- * The assertion type is `A => B => Unit`, the two implicit functions should each be of type `A => B`.
+ * The `test` method takes an assertion and a list of implicit functions.
+ * The assertion type is `A => B => Unit`; the implicit functions should each be of type `A => B`.
  * In the given test sources, there are two relevant declarations:
  * `type Solution`, which is the signature of the function under test; and,
  * `given (Solution, Solution)`, which are the template and provided solutions, respectively.
@@ -65,45 +68,52 @@ trait BaseSpec extends AnyFreeSpec
     with Matchers
     with ScalaCheckPropertyChecks :
 
+  /** A type alias to help define solution types for testing. */
+  type =*=>[A, B] = A => Result[B]
+
   /** A generator of arbitrary characters. */
   val arbChar: Gen[Char] = Arbitrary.arbChar.arbitrary
 
   /** A generator of arbitrary integers. */
   val arbInt: Gen[Int] = Arbitrary.arbInt.arbitrary
 
+  /** A generator of arbitrary integers between 1 and 10 inclusive. */
+  val arbSmallPosInt: Gen[Int] = Gen.chooseNum(1, 10)
+
+  /** A generator of arbitrary integers between 2 and 10 inclusive. */
+  val arbSmallPosInt2Plus: Gen[Int] = Gen.chooseNum(2, 10)
+
   /** A generator of arbitrary length (possibly empty) lists of arbitrary integers. */
   val arbIntList: Gen[List[Int]] = Gen.listOf(arbInt)
 
-//  /**
-//   * Tests the given assertion against a pair of solutions (assumed to be the exercise and provided solutions).
-//   *
-//   * @param a   the assertion to be tested
-//   * @param fns the solutions to be tested
-//   * @tparam A the type of input taken by a solution
-//   * @tparam B the type of output produced by a solution
-//   */
-//  def test[S](a: S => Unit)(using fns: (S, S)): Unit =
-//    val (x, p) = fns
-//    "(exercise solution)" taggedAs (ExerciseSolution) in a(x)
-//    "(provided solution)" taggedAs (ProvidedSolution) in a(p)
+  /** A generator of a shuffled list of integers (with the seed given to [[scala.util.Random]]). */
+  val arbShuffledIntList: Gen[(Long, List[Int])] =
+    for
+      seed <- Arbitrary.arbLong.arbitrary
+      rnd = new Random(seed)
+      n <- arbSmallPosInt
+    yield (seed, rnd.shuffle((1 to n).toList))
 
   /**
-   * Tests the given assertion against a pair of solutions (assumed to be the exercise and provided solutions).
+   * Tests the given assertion against a list of solutions.
    *
-   * @param a   the assertion to be tested
-   * @param fns the solutions to be tested
+   * @param a  the assertion to be tested
+   * @param ss the solutions to be tested
    * @tparam A the type of input taken by a solution
    * @tparam B the type of output produced by a solution
    */
-  def test[S](a: S => Unit)(using ss: List[S]): Unit =
-    SolutionType.iterator(ss).foreach {
-      si =>
-          si.st.tags match
-            case Nil => si.st.name in a(si.s)
-            case t :: Nil => si.st.name taggedAs (t) in a(si.s)
-            case t1 :: t2 :: Nil => si.st.name taggedAs (t1, t2) in a(si.s)
-            case _ => throw new Exception()
-    }
+  def test[S](a: S => Unit)(using ss: List[(S399Tag, S)]): Unit =
+    ss.toList.groupBy(_._1).toList // List[(S399Tag, List[(S399Tag, S)])]
+        .sortBy(_._1.ordinal).map(_._2) // List[List[(S399Tag, S)]]
+        .flatMap {
+          l =>
+            l.zipWithIndex.map {
+              case ((t, s), i) => (s, (if l.length == 1 then t.label else s"${t.label} ${i + 1}"), t)
+            }
+        }
+        .foreach {
+          case (s, l, t) => s"($l solution)" taggedAs (t) in a(s)
+        }
 
   /**
    * Extension methods for an instance of [[Either]].
@@ -146,28 +156,10 @@ trait BaseSpec extends AnyFreeSpec
     def value: A =
       o.fold(throw new TestFailedException(_ => Some("empty option does not have a value"), None, pos))(identity)
 
-/** A scalatest tag for tests of exercise solutions. */
-object ExerciseSolution extends Tag("s399.ExerciseSolution")
+/** An enumeration of tags specific to the S399 package. */
+enum S399Tag(val label: String, n: String) extends Tag(n) :
 
-/** A scalatest tag for tests of provided solutions. */
-object ProvidedSolution extends Tag("s399.ProvidedSolution")
-
-/** A scalatest tag for tests of primary provided solutions. */
-object PrimarySolution extends Tag("s399.PrimarySolution")
-
-/** A scalatest tag for tests of alternate provided solutions. */
-object AlternateSolution extends Tag("s399.AlternateSolution")
-
-final case class SolutionType(name: String, tags: List[Tag])
-
-final case class SolutionInfo[S](st: SolutionType, s: S)
-
-object SolutionType:
-
-  def stIterator: Iterator[SolutionType] =
-    Iterator.single(SolutionType("(exercise solution)", List(ExerciseSolution))) ++
-        Iterator.single(SolutionType("(provided solution)", List(ProvidedSolution, PrimarySolution))) ++
-        Iterator.from(1).map(i => SolutionType(s"(alternate solution $i)", List(ProvidedSolution, AlternateSolution)))
-
-  def iterator[S](ss: List[S]): Iterator[SolutionInfo[S]] =
-    stIterator.zip(ss).map(SolutionInfo.apply)
+  case ExerciseSolution extends S399Tag("exercise", "s399.ExerciseSolution")
+  case PrimarySolution extends S399Tag("primary", "s399.PrimarySolution")
+  case AlternateSolution extends S399Tag("alternate", "s399.AlternateSolution")
+  case PracticeSolution extends S399Tag("practice", "s399.PracticeSolution")

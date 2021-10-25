@@ -40,10 +40,10 @@ trait P09:
   def pack[A](as: List[A]): Result[List[List[A]]]
 
 /** The exercise solution to [[P09]]. */
-object P09x extends P09 :
+object X09 extends P09 :
 
   // TODO: add your implementation here
   override def pack[A](as: List[A]): Result[List[List[A]]] = ???
 
   /** A main method that executes the exercise solution above on the sample input. */
-  @main def p09xmain: Unit = println(pack(List(1, 1, 1, 1, 2, 3, 3, 1, 1, 4, 5, 5, 5, 5)))
+  @main def x09main: Unit = println(pack(List(1, 1, 1, 1, 2, 3, 3, 1, 1, 4, 5, 5, 5, 5)))

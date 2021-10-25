@@ -39,10 +39,10 @@ trait P06:
   def isPalindrome(l: List[_]): Result[Boolean]
 
 /** The exercise solution to P06. */
-object P06x extends P06:
+object X06 extends P06 :
 
   // TODO: add your implementation here
   override def isPalindrome(l: List[_]): Result[Boolean] = ???
 
   /** A main method that executes the exercise solution above on the sample input. */
-  @main def p06xmain: Unit = println(isPalindrome(List(1, 2, 3, 2, 1)))
+  @main def x06main: Unit = println(isPalindrome(List(1, 2, 3, 2, 1)))

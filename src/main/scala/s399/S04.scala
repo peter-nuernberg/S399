@@ -16,12 +16,11 @@
  * limitations under the License.
  */
 package s399
-package solutions
 
 import scala.annotation.tailrec
 
 /** The provided solution to [[P04]]. */
-object P04s extends P04 :
+object S04 extends P04 :
 
   /**
    * Returns the number of elements of a list.
@@ -29,8 +28,8 @@ object P04s extends P04 :
    * This solution has an additional complexity relative to the previous ones.
    * Namely, it introduces an auxilliary inner method.
    * The purpose of the inner method is to allow us to write the solution in a tail-recursive way.
-   * (See [[P04s.lengthAlt1]] for a non-tail-recursive solution.)
-   * 
+   * (See [[D104]] for a non-tail-recursive solution.)
+   *
    * To make the solution tail-recursive, we define an auxilliary function that carries an accumulator.
    * The recursion is simililarly easy to the given non-tail-recursive solution:
    *
@@ -44,55 +43,118 @@ object P04s extends P04 :
    * I like give the accumulator a reasonable default value, but require the `rest` parameter to be specified
    * explicitly.
    * This, also, is just a matter of taste.
-   * Reasonable alternatives might be are [[P04s.lengthAlt2]] and [[P04s.lengthAlt3]].
+   * Reasonable alternatives might be are [[A104]] and [[A204]].
    *
    * Finally, since there is no error case here, one could just adjust the outer method signature to return `Int`
    * instead of `Result[Int]`.
    * I just kept it wrapped in `Result` to make the signatures uniform across problems.
    * In situations such as these, the auxilliary could also return `Result[Int]`.
    * Also, the auxilliary could return its value wrapped in a `Result`.
-   * See [[P04s.lengthAlt4]].
+   * See [[A304]].
    */
   override def length(l: List[_]): Result[Int] =
+
     @tailrec
     def aux(rest: List[_], acc: Int = 0): Int =
       rest match
         case Nil => acc
         case _ :: t => aux(t, acc + 1)
+
     Right(aux(l))
 
-  /** A non-tail-recusive solution. */
-  def lengthAlt1(l: List[_]): Result[Int] =
-    l match
-      case Nil => Right(0)
-      case _ :: t => lengthAlt1(t).map(_ + 1)
+  /** A main method that executes the provided solution above on the sample input. */
+  @main def s04main: Unit = println(length(List(1, 1, 2, 3, 5, 8)))
 
-  /** A tail-recursive alternate that provides good defaults for the outer method call to be very simple. */
-  def lengthAlt2(l: List[_]): Result[Int] =
+// === ALTERNATE SOLUTION 1 ===
+
+/** The first alternate solution to [[P04]]. */
+object A104 extends P04 :
+
+  /**
+   * Returns the number of elements of a list.
+   *
+   * This is the "all defaults provided" version of the solution.
+   * The call to the auxilliary is pretty clean -- just call it with no parameters!
+   */
+  override def length(l: List[_]): Result[Int] =
+
     @tailrec
     def aux(rest: List[_] = l, acc: Int = 0): Int =
       rest match
         case Nil => acc
         case _ :: t => aux(t, acc + 1)
+
     Right(aux())
 
-  /** A tail-recursive alternate that provides no defaults, requiring the outer method call to be explicit. */
-  def lengthAlt3(l: List[_]): Result[Int] =
+  /** A main method that executes the first alternate solution above on the sample input. */
+  @main def a104main: Unit = println(length(List(1, 1, 2, 3, 5, 8)))
+
+// === ALTERNATE SOLUTION 2 ===
+
+/** The second alternate solution to [[P04]]. */
+object A204 extends P04 :
+
+  /**
+   * Returns the number of elements of a list.
+   *
+   * This is the "no defaults provided" version of the solution.
+   * The call to the auxilliary is very explicit about how to start the recursion.
+   */
+  override def length(l: List[_]): Result[Int] =
+
     @tailrec
     def aux(rest: List[_], acc: Int): Int =
       rest match
         case Nil => acc
         case _ :: t => aux(t, acc + 1)
+
     Right(aux(l, 0))
 
-  /** A tail-recursive alternate whose auxilliary also wraps values in `Result`. */
-  def lengthAlt4(l: List[_]): Result[Int] =
+  /** A main method that executes the second alternate solution above on the sample input. */
+  @main def a204main: Unit = println(length(List(1, 1, 2, 3, 5, 8)))
+
+// === ALTERNATE SOLUTION 3 ===
+
+/** The third alternate solution to [[P04]]. */
+object A304 extends P04 :
+
+  /**
+   * Returns the number of elements of a list.
+   *
+   * This is the "wrapped auxilliary" version of the solution.
+   * The value of the auxilliary is already wrapped in a [[Result]], so no need to wrap at the call site.
+   * We'll need this approach for auxilliaries that can return errors.
+   */
+  override def length(l: List[_]): Result[Int] =
+
     @tailrec
     def aux(rest: List[_], acc: Int = 0): Result[Int] =
       rest match
         case Nil => Right(acc)
         case _ :: t => aux(t, acc + 1)
+
     aux(l)
 
-  /** A main method that executes the provided solution above on the sample input. */
-  @main def p04smain: Unit = println(length(List(1, 1, 2, 3, 5, 8)))
+  /** A main method that executes the third alternate solution above on the sample input. */
+  @main def a304main: Unit = println(length(List(1, 1, 2, 3, 5, 8)))
+
+// === PRACTICE SOLUTION 1 ===
+
+/** The first practice solution to [[P04]]. */
+object D104 extends P04 :
+
+  /**
+   * Returns the number of elements of a list.
+   *
+   * This is a non-tail-recursive solution.
+   * Sometimes, it's easier to write the non-tail-recursive version of a solution first before trying the tail-recursive
+   * version with an accumulator.
+   */
+  override def length(l: List[_]): Result[Int] =
+    l match
+      case Nil => Right(0)
+      case _ :: t => length(t).map(_ + 1)
+
+  /** A main method that executes the first alternate solution above on the sample input. */
+  @main def d104main: Unit = println(length(List(1, 1, 2, 3, 5, 8)))
+

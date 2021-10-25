@@ -16,12 +16,11 @@
  * limitations under the License.
  */
 package s399
-package solutions
 
 import scala.annotation.tailrec
 
 /** The provided solution to [[P01]]. */
-object P01s extends P01 :
+object S01 extends P01 :
 
   /**
    * Returns the last element of a list.
@@ -56,4 +55,4 @@ object P01s extends P01 :
       case _ :: t => last(t)
 
   /** A main method that executes the provided solution above on the sample input. */
-  @main def p01smain: Unit = println(last(List(1, 1, 2, 3, 5, 8)))
+  @main def s01main: Unit = println(last(List(1, 1, 2, 3, 5, 8)))

@@ -17,31 +17,26 @@
  */
 package s399
 
-import s399.solutions.*
+/** The specification of the behavior of a correct solution to [[P02.penultimate]]. */
+class P02Spec extends BaseSpec :
 
-/** The specification of the behavior of a correct solution to [[P02]]. */
-class P02Spec extends BaseSpec {
-
-  type Solution[A] = List[A] => Result[A]
-
-  given[A]: List[Solution[A]] = List(P02x.penultimate, P02s.penultimate,
-    P02s.penultimateAlt1, P02s.penultimateAlt2, P02s.penultimateAlt3)
+  // === ASSERTIONS ===
 
   "A solution to problem 2" - {
 
     "when given the example input, should return the example output" - {
 
-      def assertion(f: Solution[Int]): Unit =
-        f(List(1, 1, 2, 3, 5, 8)).rightValue shouldBe 5
+      def assertion(s: Solution[Int]): Unit =
+        s(List(1, 1, 2, 3, 5, 8)).rightValue shouldBe 5
 
       test(assertion)
     }
 
     "when given a list with 2 or more elements as input, should return that list's penultimate element" - {
 
-      def assertion(f: Solution[Int]): Unit =
+      def assertion(s: Solution[Int]): Unit =
         forAll((arbIntList, "base"), (arbInt, "penElem"), (arbInt, "lastElem")) {
-          (base, penElem, lastElem) => f(base :+ penElem :+ lastElem).rightValue shouldBe penElem
+          (base, penElem, lastElem) => s(base :+ penElem :+ lastElem).rightValue shouldBe penElem
         }
 
       test(assertion)
@@ -49,20 +44,31 @@ class P02Spec extends BaseSpec {
 
     "when given an empty list as input, should return an error" - {
 
-      def assertion(f: Solution[Any]): Unit =
-        f(Nil).leftValue shouldBe an[S399Error]
+      def assertion(s: Solution[Any]): Unit =
+        s(Nil).leftValue shouldBe an[S399Error]
 
       test(assertion)
     }
 
     "when given a 1-element list as input, should return an error" - {
 
-      def assertion(f: Solution[Int]): Unit =
+      def assertion(s: Solution[Int]): Unit =
         forAll((arbInt, "elem")) {
-          (elem) => f(List(elem)).leftValue shouldBe an[S399Error]
+          (elem) => s(List(elem)).leftValue shouldBe an[S399Error]
         }
 
       test(assertion)
     }
   }
-}
+
+  // === INFRASTRUCTURE ===
+
+  type Solution[A] = List[A] =*=> A
+
+  given[A]: List[(S399Tag, Solution[A])] = List(
+    S399Tag.ExerciseSolution -> X02.penultimate,
+    S399Tag.PrimarySolution -> S02.penultimate,
+    S399Tag.AlternateSolution -> A102.penultimate,
+    S399Tag.AlternateSolution -> A102.penultimate,
+    S399Tag.AlternateSolution -> A102.penultimate,
+  )

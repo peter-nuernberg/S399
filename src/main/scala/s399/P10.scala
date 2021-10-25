@@ -30,25 +30,24 @@ package s399
  */
 trait P10:
 
-  /** A solution to problem P09 for use in the [[P10.encode]] method. */
-  val p09: P09
-
   /**
    * Returns a run-length encoding of the given list.
    *
-   * @param as the list to be run-length encoded
+   * @param as  the list to be run-length encoded
+   * @param p09 a solution to [[P09]]
    * @tparam A the type of elements in the given list
-   * @return a run-length encoding of the given list
+   * @return either a run-length encoding of the given list, or an error if the underlying call to [[P09.pack]] failed
    */
-  def encode[A](as: List[A]): Result[List[(Int, A)]]
+  def encode[A](as: List[A])(using p09: P09): Result[List[(Int, A)]]
 
 /** The exercise solution to [[P10]]. */
-object P10x extends P10:
+object X10 extends P10 :
 
-  override val p09: P09 = P09x
+  /** The solution to [[P09]] used by [[X10.encode]] by default. */
+  given P09 = X09
 
   // TODO: add your implementation here
-  override def encode[A](as: List[A]): Result[List[(Int, A)]] = ???
+  override def encode[A](as: List[A])(using p09: P09): Result[List[(Int, A)]] = ???
 
   /** A main method that executes the exercise solution above on the sample input. */
-  @main def p10xmain: Unit = println(encode(List(1, 1, 1, 1, 2, 3, 3, 1, 1, 4, 5, 5, 5, 5)))
+  @main def x10main: Unit = println(encode(List(1, 1, 1, 1, 2, 3, 3, 1, 1, 4, 5, 5, 5, 5)))

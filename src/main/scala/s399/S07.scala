@@ -16,12 +16,11 @@
  * limitations under the License.
  */
 package s399
-package solutions
 
 import scala.annotation.tailrec
 
 /** The provided solution to [[P07]]. */
-object P07s extends P07 :
+object S07 extends P07 :
 
   /**
    * Flattens the given structure into a single, top-level list.
@@ -63,6 +62,7 @@ object P07s extends P07 :
    * the test suite, but you can run it through the "main" entry point [[P07s.p07sAlt2main]].)
    */
   override def flatten(l: List[_]): Result[List[_]] =
+
     @tailrec
     def aux(rest: List[_], acc: List[_] = Nil): List[_] =
       rest match
@@ -74,8 +74,22 @@ object P07s extends P07 :
 
     Right(aux(l))
 
-  /** An alternate solution that runs slower but builds the accumulator in a more natural front-to-back way. */
-  def flattenAlt1(l: List[_]): Result[List[_]] =
+  /** A main method that executes the provided solution above on the sample input. */
+  @main def s07main: Unit = println(flatten(List(List(1, 1), 2, List(3, List(5, 8)))))
+
+// === ALTERNATE SOLUTION 1 ===
+
+/** The first alternate solution to [[P07]]. */
+object A107 extends P07 :
+
+  /**
+   * Flattens the given structure into a single, top-level list.
+   * 
+   * An alternate solution that runs slower but builds the accumulator in a more natural front-to-back way.
+   */
+  override def flatten(l: List[_]): Result[List[_]] =
+
+    @tailrec
     def aux(rest: List[_], acc: List[_] = Nil): List[_] =
       rest match
         case Nil => acc
@@ -86,8 +100,13 @@ object P07s extends P07 :
 
     Right(aux(l))
 
-  /** A main method that executes the provided solution above on the sample input. */
-  @main def p07smain: Unit = println(flatten(List(List(1, 1), 2, List(3, List(5, 8)))))
+  /** A main method that executes the first alternate solution above on the sample input. */
+  @main def a107main: Unit = println(flatten(List(List(1, 1), 2, List(3, List(5, 8)))))
+
+// === PRACTICE SOLUTION 1 ===
+
+/** The first practice solution to [[P07]]. */
+object D107 :
 
   /** A tree. */
   sealed trait Tree[+A]
@@ -100,15 +119,22 @@ object P07s extends P07 :
 
   /** Some factories to make trees. */
   object Tree:
-    
+
     /** Creates a leaf. */
     def apply[A](a: A): Tree[A] = Leaf(a)
 
     /** Creates a node. */
     def apply[A](ts: Tree[A]*) = Node(ts.toList)
 
-  /** A variation of flatten that allows better type bounds on the input and output, but requires new data types. */
-  def flattenAlt2[A](t: Tree[A]): Result[List[A]] =
+  /**
+   * Flattens the given structure into a single, top-level list.
+   *
+   * An alternate solution that rewrites the signatures significantly, but is type safer.
+   * This won't run inside the gievn test suite -- it's mostly just to look at.
+   * There is a `main` method included to verify the example input.
+   */
+  def flatten[A](t: Tree[A]): Result[List[A]] =
+
     def aux(rest: Tree[A]): List[A] =
       rest match
         case Leaf(a) => List(a)
@@ -116,5 +142,5 @@ object P07s extends P07 :
 
     Right(aux(t))
 
-  /** A main method that executes the provided solution above on the sample input. */
-  @main def p07sAlt2main: Unit = println(flattenAlt2(Tree(Tree(Tree(1), Tree(1)), Tree(2), Tree(Tree(3), Tree(Tree(5), Tree(8))))))
+  /** A main method that executes the first practice solution above on the sample input. */
+  @main def d107main: Unit = println(flatten(Tree(Tree(Tree(1), Tree(1)), Tree(2), Tree(Tree(3), Tree(Tree(5), Tree(8))))))

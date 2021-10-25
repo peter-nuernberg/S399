@@ -18,30 +18,33 @@
 package s399
 
 /**
- * P01. (*) Find the last element of a list.
+ * (**) Run-length encoding of a list (direct solution).
+ *
+ * Implement the so-called run-length encoding data compression method directly.
+ * I.e. don't use other methods you've written (like [[P09.pack]]); do all the work directly.
  *
  * @example
  * {{{
- *   scala> last(List(1, 1, 2, 3, 5, 8))
- *   val res0: s399.Result[Int] = Right(8)
+ *   scala> encodeDirect(List(1, 1, 1, 1, 2, 3, 3, 1, 1, 4, 5, 5, 5, 5))
+ *   val res0: s399.Result[List[(Int, Int)]] = Right(List((4,1), (1,2), (2,3), (2,1), (1,4), (4,5)))
  * }}}
  */
-trait P01:
+trait P13:
 
   /**
-   * Returns the last element of a list.
+   * Returns a run-length encoding of the given list.
    *
-   * @param as the list, the last element of which should be returned
+   * @param as the list to be run-length encoded
    * @tparam A the type of elements in the given list
-   * @return either the last element in the given list, or an error if the given list is empty
+   * @return a run-length encoding of the given list
    */
-  def last[A](as: List[A]): Result[A]
+  def encodeDirect[A](as: List[A]): Result[List[(Int, A)]]
 
-/** The exercise solution to [[P01]]. */
-object X01 extends P01 :
+/** The exercise solution to [[P13]]. */
+object X13 extends P13 :
 
   // TODO: add your implementation here
-  override def last[A](as: List[A]): Result[A] = ???
+  override def encodeDirect[A](as: List[A]): Result[List[(Int, A)]] = ???
 
   /** A main method that executes the exercise solution above on the sample input. */
-  @main def x01main: Unit = println(last(List(1, 1, 2, 3, 5, 8)))
+  @main def x13main: Unit = println(encodeDirect(List(1, 1, 1, 1, 2, 3, 3, 1, 1, 4, 5, 5, 5, 5)))

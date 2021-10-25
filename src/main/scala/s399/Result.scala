@@ -15,8 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package object s399 {
+package s399
 
-  /** A type alias for results. */
-  type Result[A] = Either[S399Error, A]
-}
+/** A type alias for results. */
+type Result[A] = Either[S399Error, A]

@@ -17,30 +17,26 @@
  */
 package s399
 
-import s399.solutions.*
-
-/** The specification of the behavior of a correct solution to [[P01]]. */
-class P01Spec extends BaseSpec {
-
-  type Solution[A] = List[A] => Result[A]
-
-  given[A]: List[Solution[A]] = List(P01x.last, P01s.last)
+/** The specification of the behavior of a correct solution to [[P01.last]]. */
+class P01Spec extends BaseSpec :
+  
+  // === ASSERTIONS ===
 
   "A solution to problem 1" - {
 
     "when given the example input, should return the example output" - {
 
-      def assertion(f: Solution[Int]): Unit =
-        f(List(1, 1, 2, 3, 5, 8)).rightValue shouldBe 8
+      def assertion(s: Solution[Int]): Unit =
+        s(List(1, 1, 2, 3, 5, 8)).rightValue shouldBe 8
 
       test(assertion)
     }
 
     "when given a non-empty list as input, should return that list's last element" - {
 
-      def assertion(f: Solution[Int]): Unit =
+      def assertion(s: Solution[Int]): Unit =
         forAll((arbIntList, "base"), (arbInt, "lastElem")) {
-          (base, lastElem) => f(base :+ lastElem).rightValue shouldBe lastElem
+          (base, lastElem) => s(base :+ lastElem).rightValue shouldBe lastElem
         }
 
       test(assertion)
@@ -48,10 +44,18 @@ class P01Spec extends BaseSpec {
 
     "when given an empty list as input, should return an error" - {
 
-      def assertion(f: Solution[Any]): Unit =
-        f(Nil).leftValue shouldBe an[S399Error]
+      def assertion(s: Solution[Any]): Unit =
+        s(Nil).leftValue shouldBe an[S399Error]
 
       test(assertion)
     }
   }
-}
+  
+  // === INFRASTRUCTURE ===
+
+  type Solution[A] = List[A] =*=> A
+
+  given[A]: List[(S399Tag, Solution[A])] = List(
+    S399Tag.ExerciseSolution -> X01.last,
+    S399Tag.PrimarySolution -> S01.last,
+  )

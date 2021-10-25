@@ -52,10 +52,10 @@ trait P07:
   def flatten(l: List[_]): Result[List[_]]
 
 /** The exercise solution to [[P07]]. */
-object P07x extends P07 :
+object X07 extends P07 :
 
   // TODO: add your implementation here
   override def flatten(l: List[_]): Result[List[_]] = ???
 
   /** A main method that executes the exercise solution above on the sample input. */
-  @main def p07xmain: Unit = println(flatten(List(List(1, 1), 2, List(3, List(5, 8)))))
+  @main def x07main: Unit = println(flatten(List(List(1, 1), 2, List(3, List(5, 8)))))

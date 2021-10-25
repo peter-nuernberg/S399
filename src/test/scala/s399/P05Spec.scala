@@ -17,15 +17,10 @@
  */
 package s399
 
-import s399.solutions.*
+/** The specification of the behavior of a correct solution to [[P05.reverse]]. */
+class P05Spec extends BaseSpec :
 
-/** The specification of the behavior of a correct solution to [[P05]]. */
-class P05Spec extends BaseSpec {
-
-  type Solution[A] = List[A] => Result[List[A]]
-
-  given[A]: List[Solution[A]] = List(P05x.reverse, P05s.reverse,
-    P05s.reverseAlt1)
+  // === ASSERTIONS ===
 
   "A solution to problem 5" - {
 
@@ -47,4 +42,13 @@ class P05Spec extends BaseSpec {
       test(assertion)
     }
   }
-}
+
+  // === INFRASTRUCTURE ===
+
+  type Solution[A] = List[A] =*=> List[A]
+
+  given[A]: List[(S399Tag, Solution[A])] = List(
+    S399Tag.ExerciseSolution -> X05.reverse,
+    S399Tag.PrimarySolution -> S05.reverse,
+    S399Tag.PracticeSolution -> D105.reverse,
+  )

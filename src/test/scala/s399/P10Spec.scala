@@ -18,55 +18,93 @@
 package s399
 
 import org.scalacheck.Gen
-import s399.solutions.*
 
-/** The specification of the behavior of a correct solution to [[P10]]. */
-class P10Spec extends BaseSpec {
+/** The specification of the behavior of a correct solution to [[P10.encode]]. */
+class P10Spec extends BaseSpec :
 
-  type Solution[A] = List[A] => Result[List[(Int, A)]]
+  // === ASSERTIONS (WORKING DEPENDENCIES) ===
 
-  given[A]: List[Solution[A]] = List(P10x.encode, P10s.encode)
+  "Given a solution to problem 9 that works correctly," - {
 
-  "A solution to problem 10" - {
+    "a solution to problem 10" - {
 
-    "when given the example input, should return the example output" - {
+      "when given the example input, should return the example output" - {
 
-      def assertion(f: Solution[Int]): Unit =
-        f(List(1, 1, 1, 1, 2, 3, 3, 1, 1, 4, 5, 5, 5, 5)).rightValue shouldBe List((4,1), (1,2), (2,3), (2,1), (1,4), (4,5))
+        def assertion(f: Solution[Int]): Unit =
+          f(List(1, 1, 1, 1, 2, 3, 3, 1, 1, 4, 5, 5, 5, 5)).rightValue shouldBe List(
+            (4, 1), (1, 2), (2, 3), (2, 1), (1, 4), (4, 5))
 
-      test(assertion)
+        test(assertion)
+      }
+
+      "when given an empty list, should return an empty list" - {
+
+        def assertion(f: Solution[Any]): Unit =
+          f(Nil).rightValue shouldBe Nil
+
+        test(assertion)
+      }
+
+      "when given a list with a single repeated element, should return the expected result" - {
+
+        def assertion(f: Solution[Int]): Unit =
+          forAll((arbInt, "i"), (arbSmallPosInt, "n")) {
+            (i, n) => f(List.fill(n)(i)).rightValue shouldBe List((n, i))
+          }
+
+        test(assertion)
+      }
+
+      "when given a list with multiple repeated elements, should return the expected result" - {
+
+        def assertion(f: Solution[Int]): Unit =
+          forAll((arbShuffledIntList, "(seed, l)")) {
+            (_, base) =>
+              val in = base.flatMap(i => List.fill(i)(i))
+              val out = base.map(i => (i, i))
+              f(in).rightValue shouldBe out
+          }
+
+        test(assertion)
+      }
     }
 
-    "when given an empty list, should return an empty list" - {
+    // === INFRASTRUCTURE (WORKING DEPENDENCIES) ===
 
-      def assertion(f: Solution[Any]): Unit =
-        f(Nil).rightValue shouldBe Nil
+    type Solution[A] = List[A] =*=> List[(Int, A)]
 
-      test(assertion)
-    }
+    given P09 = S09
 
-    "when given a list with a single repeated element, should return the expected result" - {
-
-      def assertion(f: Solution[Int]): Unit =
-        forAll ((arbInt, "i"), (Gen.chooseNum(1, 10), "n")) {
-          (i, n) => f(List.fill(n)(i)).rightValue shouldBe List((n, i))
-        }
-
-      test(assertion)
-    }
-
-    "when given a list with multiple repeated elements, should return the expected result" - {
-
-      def assertion(f: Solution[Int]): Unit =
-        forAll ((Gen.chooseNum(1, 10), "n")) {
-          (n) =>
-            val base = scala.util.Random.shuffle((1 to n).toList)
-            val out = base.map(i => (i, i))
-            val in = base.flatMap(i => List.fill(i)(i))
-            f(in).rightValue shouldBe out
-        }
-
-      test(assertion)
-    }
+    given[A]: List[(S399Tag, Solution[A])] = List(
+      S399Tag.ExerciseSolution -> X10.encode,
+      S399Tag.PrimarySolution -> S10.encode,
+    )
   }
-}
+
+  // === ASSERTIONS (BROKEN DEPENDENCIES) ===
+
+  "Given a solution to problem 9 that always fails," - {
+
+    "a solution to problem 10" - {
+
+      "when given any input, shlould return an error" - {
+
+        def assertion(f: Solution[Any]): Unit =
+          f(Nil).leftValue shouldBe an[S399Error]
+
+        test(assertion)
+      }
+    }
+
+    // === INFRASTRUCTURE (BROKEN DEPENDENCIES) ===
+
+    type Solution[A] = List[A] =*=> List[(Int, A)]
+
+    given P09 = new P09 :
+      override def pack[A](as: List[A]): Result[List[List[A]]] = Left(S399Error("an error"))
+
+    given[A]: List[(S399Tag, Solution[A])] = List(
+      S399Tag.ExerciseSolution -> X10.encode,
+      S399Tag.PrimarySolution -> S10.encode,
+    )
+  }
