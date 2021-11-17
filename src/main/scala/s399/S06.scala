@@ -25,7 +25,7 @@ object S06 extends P06 :
    *
    * There is a very straightforward way of implementing this method by comparing the given list to the result of either
    * the standard library reverse or our implementation in [[P05.reverse]] on the given list.
-   * (See [[P06s.isPalindromeAlt1]].)
+   * (See [[A106]].)
    * Some of the problem definitions specifically call out using solutions to previous problems.
    * Since this one doesn't, I implemented a slower solution that doesn't rely on P05.
    *
@@ -36,7 +36,8 @@ object S06 extends P06 :
    *
    * &forall; &lambda; &isin; List, &iota; &isin; Int &SuchThat; 0 &ge; &iota; &lt; &mid;&lambda;&mid; / 2 : &lambda;(&iota;) = &lambda;(&mid;&lambda;&mid; - &iota; - 1)
    *
-   * where &lambda;(&iota;) means the element of &lambda; at index &iota; (0-indexed).
+   * where &lambda;(&iota;) means the element of &lambda; at index &iota; (0-indexed), and &mid;&lambda;&mid; is the
+   * length of the list &lambda;.
    *
    * So, if we test every index starting at 0 that is less than half the length of the given list,
    * we check whether the element at that index is the same as the element on the other half of the last that is as far
@@ -44,19 +45,26 @@ object S06 extends P06 :
    *
    * Many folks might write a `for` loop that iterates over the indexes we want to test.
    * In this solution, we have an iterator over all `Int`s starting at 0.
-   * For every int, the method treats that as an index and evaluates the property above, which yields a boolean
-   * (at least for index values less than half the length of the list.)
+   * For every integer, the method treats that as an index and evaluates the property above, which yields a boolean
+   * (at least for index values less than half the length of the list -- see below.)
    * Then, the method `take`s the correct number of these boolean results (each of which represents the truth or falsity
    * of the property above for a pair of elements);
    * this is an iterator over booleans that is half the length of the given list.
    * The method then `fold`s this, and-ing elements together, with a "zero" value of `true`.
    * Finally, we wrap the whole thing in `Right` (since there's no error we'll ever return from this method.)
    *
+   * The property evaluation described above is *lazily* applied, meaning it is only calculated when needed.
+   * In general, you should feel free to `map` the values of iterators, even if the calculation may not be well-defined
+   * on certain elements that are (eventually) returned by the iterator.
+   * In this case `i => l(i) == l(l.length - i - 1)` may not really make sense for arbitrary values of `i`.
+   * But, this method follows the `map` on the function above by `take(l.length / 2)`, meaning the function in the
+   * `map` is never applied to any values of `i &ge; (l.length / 2)`.
+   *
    * In the provided solutions, I'll use this "iterator" pattern instead of an explicit `for` loop.
    * This is a matter of personal taste.
    * We could have implemented this as a `for` loop that carries an accumulator that is updated on every pass through
    * the loop.
-   * (See [[P06s.isPalindromeAlt2]].)
+   * (See [[D106]].)
    *
    * For the primary provided solutions provided here, however, I try to avoid use of variables (`var`s).
    */
@@ -68,7 +76,7 @@ object S06 extends P06 :
           .foldLeft(true)(_ & _))
 
   /** A main method that executes the provided solution above on the sample input. */
-  @main def s06main: Unit = println(isPalindrome(List(1, 2, 3, 2, 1)))
+  @main def s06main: Unit = println(isPalindrome(List("a", "b", "c", "b", "a")))
 
 // === ALTERNATE SOLUTION 1 ===
 
@@ -80,11 +88,10 @@ object A106 extends P06 :
    *
    * This alternate solution that uses the built-in reverse (could also use the reverse implemented in [[P05]].)
    */
-  override def isPalindrome(l: List[_]): Result[Boolean] =
-    Right(l == l.reverse)
+  override def isPalindrome(l: List[_]): Result[Boolean] = Right(l == l.reverse)
 
   /** A main method that executes the first alternate solution above on the sample input. */
-  @main def a106main: Unit = println(isPalindrome(List(1, 2, 3, 2, 1)))
+  @main def a106main: Unit = println(isPalindrome(List("a", "b", "c", "b", "a")))
 
 // === PRACTICE SOLUTION 1 ===
 
@@ -96,6 +103,9 @@ object D106 extends P06 :
    *
    * This alternate solution uses a variable accumulator.
    * Writing a solution in this way can sometimes be simpler than writing a solution that does not use variables.
+   * Variables are generally not idiomatic scala, though.
+   * It's fine to start with a method that looks like this (explicit iteration that changes a variable), but you should
+   * see if you can convert such code to something doesn't use variables if possible.
    */
   override def isPalindrome(l: List[_]): Result[Boolean] =
     var acc: Boolean = true
@@ -104,4 +114,4 @@ object D106 extends P06 :
     Right(acc)
 
   /** A main method that executes the provided solution above on the sample input. */
-  @main def d106main: Unit = println(isPalindrome(List(1, 2, 3, 2, 1)))
+  @main def d106main: Unit = println(isPalindrome(List("a", "b", "c", "b", "a")))

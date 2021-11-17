@@ -26,16 +26,16 @@ class P02Spec extends BaseSpec :
 
     "when given the example input, should return the example output" - {
 
-      def assertion(s: Solution[Int]): Unit =
-        s(List(1, 1, 2, 3, 5, 8)).rightValue shouldBe 5
+      def assertion(s: Solution[String]): Unit =
+        s(List("a", "b", "c", "d", "e", "f")).rightValue shouldBe "e"
 
       test(assertion)
     }
 
     "when given a list with 2 or more elements as input, should return that list's penultimate element" - {
 
-      def assertion(s: Solution[Int]): Unit =
-        forAll((arbIntList, "base"), (arbInt, "penElem"), (arbInt, "lastElem")) {
+      def assertion(s: Solution[String]): Unit =
+        forAll((arbStringList, "base"), (arbString, "penElem"), (arbString, "lastElem")) {
           (base, penElem, lastElem) => s(base :+ penElem :+ lastElem).rightValue shouldBe penElem
         }
 
@@ -52,8 +52,8 @@ class P02Spec extends BaseSpec :
 
     "when given a 1-element list as input, should return an error" - {
 
-      def assertion(s: Solution[Int]): Unit =
-        forAll((arbInt, "elem")) {
+      def assertion(s: Solution[String]): Unit =
+        forAll((arbString, "elem")) {
           (elem) => s(List(elem)).leftValue shouldBe an[S399Error]
         }
 

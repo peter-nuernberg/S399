@@ -30,8 +30,6 @@ object S05 extends P05 :
    *
    * The construction of the inner tail-recursive method for this problem is similar to that of the auxilliary for
    * [[P04]].
-   * The exit case will return the accumulator instead of the additive identity (`0` for integers in P04, `Nil` for
-   * lists here).
    * The recurse case does the "addition" (integer addition in P04, prepending here) to the accumulator before making
    * the recursive call on the tail of the list being processed.
    */
@@ -46,7 +44,7 @@ object S05 extends P05 :
     Right(aux(as))
 
   /** A main method that executes the provided solution above on the sample input. */
-  @main def s05main: Unit = println(reverse(List(1, 1, 2, 3, 5, 8)))
+  @main def s05main: Unit = println(reverse(List("a", "b", "c", "d", "e", "f")))
 
 // === PRACTICE SOLUTION 1 ===
 
@@ -57,6 +55,8 @@ object D105 extends P05 :
    * Returns the given list in reverse order.
    *
    * This is a non-tail-recursive solution.
+   * The exit case here returns `Nil` instead of `0` in [[D104]] -- note that these are the additive identities for
+   * lists and integers, respectively; likewise, the recursion case adds (or in the case of lists here, prepends).
    */
   override def reverse[A](as: List[A]): Result[List[A]] =
     as match
@@ -64,4 +64,4 @@ object D105 extends P05 :
       case h :: t => reverse(t).map(_ :+ h)
 
   /** A main method that executes the first alternate solution above on the sample input. */
-  @main def d105main: Unit = println(reverse(List(1, 1, 2, 3, 5, 8)))
+  @main def d105main: Unit = println(reverse(List("a", "b", "c", "d", "e", "f")))

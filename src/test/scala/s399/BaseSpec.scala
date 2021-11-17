@@ -94,6 +94,12 @@ trait BaseSpec extends AnyFreeSpec
       n <- arbSmallPosInt
     yield (seed, rnd.shuffle((1 to n).toList))
 
+  /** A generator of arbitrary strings. */
+  val arbString: Gen[String] = Gen.asciiPrintableStr
+
+  /** A generator of arbitrary length (possibly empty) lists of arbitrary strings. */
+  val arbStringList: Gen[List[String]] = Gen.listOf(arbString)
+
   /**
    * Tests the given assertion against a list of solutions.
    *

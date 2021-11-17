@@ -18,30 +18,36 @@
 package s399
 
 /**
- * P01. (*) Find the last element of a list.
+ * P20. (*) Remove the Kth element from a list.
+ *
+ * Return the list and the removed element in a Tuple. Elements are numbered from 0.
  *
  * @example
  * {{{
- * scala> last(List("a", "b", "c", "d", "e", "f"))
- * val res0: s399.Result[String] = Right(f)
+ *   scala> removeAt(1, List(1, 2, 3, 4))
+ *   val res0: s399.Result[(List[Int], Int)] = (List(1, 3, 4),2)
  * }}}
  */
-trait P01:
+trait P20:
 
   /**
-   * Returns the last element of a list.
+   * Removes the element at the given index from the given list.
+   * 
+   * Non-negative indexes are interpreted left-to-right (0-based).
+   * Negative indexes are interpreted right-to-left (1-based).
    *
+   * @param k the index of the element to remove
    * @param as the list, the last element of which should be returned
    * @tparam A the type of elements in the given list
-   * @return either the last element in the given list, or an error if the given list is empty
+   * @return either the modified list and the removed element, or an error if the given index is out of bounds
    */
-  def last[A](as: List[A]): Result[A]
+  def removeAt[A](k: Int, as: List[A]): Result[(List[A], A)]
 
-/** The exercise solution to [[P01]]. */
-object X01 extends P01 :
+/** The exercise solution to [[P20]]. */
+object X20 extends P20 :
 
   // TODO: add your implementation here
-  override def last[A](as: List[A]): Result[A] = ???
+  override def removeAt[A](k: Int, as: List[A]): Result[(List[A], A)] = ???
 
   /** A main method that executes the exercise solution above on the sample input. */
-  @main def x01main: Unit = println(last(List("a", "b", "c", "d", "e", "f")))
+  @main def x20main: Unit = println(removeAt(1, List(1, 2, 3, 4)))

@@ -19,23 +19,23 @@ package s399
 
 /** The specification of the behavior of a correct solution to [[P01.last]]. */
 class P01Spec extends BaseSpec :
-  
+
   // === ASSERTIONS ===
 
   "A solution to problem 1" - {
 
     "when given the example input, should return the example output" - {
 
-      def assertion(s: Solution[Int]): Unit =
-        s(List(1, 1, 2, 3, 5, 8)).rightValue shouldBe 8
+      def assertion(s: Solution[String]): Unit =
+        s(List("a", "b", "c", "d", "e", "f")).rightValue shouldBe "f"
 
       test(assertion)
     }
 
     "when given a non-empty list as input, should return that list's last element" - {
 
-      def assertion(s: Solution[Int]): Unit =
-        forAll((arbIntList, "base"), (arbInt, "lastElem")) {
+      def assertion(s: Solution[String]): Unit =
+        forAll((arbStringList, "base"), (arbString, "lastElem")) {
           (base, lastElem) => s(base :+ lastElem).rightValue shouldBe lastElem
         }
 
@@ -50,7 +50,7 @@ class P01Spec extends BaseSpec :
       test(assertion)
     }
   }
-  
+
   // === INFRASTRUCTURE ===
 
   type Solution[A] = List[A] =*=> A

@@ -108,7 +108,6 @@ class P03Spec extends BaseSpec :
   type Solution[A] = (Int, List[A]) =*=> A
 
   given[A]: List[(S399Tag, Solution[A])] = List(
-    S399Tag.ExerciseSolution -> X03.nth,
-    S399Tag.PrimarySolution -> S03.nth,
-    S399Tag.AlternateSolution -> A103.nth,
+    S399Tag.ExerciseSolution -> X03.elementAt,
+    S399Tag.PrimarySolution -> S03.elementAt,
   )

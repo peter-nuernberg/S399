@@ -55,4 +55,4 @@ object S01 extends P01 :
       case _ :: t => last(t)
 
   /** A main method that executes the provided solution above on the sample input. */
-  @main def s01main: Unit = println(last(List(1, 1, 2, 3, 5, 8)))
+  @main def s01main: Unit = println(last(List("a", "b", "c", "d", "e", "f")))

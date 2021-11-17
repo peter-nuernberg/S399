@@ -22,8 +22,8 @@ package s399
  *
  * @example
  * {{{
- *   scala> length(List(1, 1, 2, 3, 5, 8))
- *   val res0: s399.Result[Int] = Right(6)
+ * scala> length(List("a", "b", "c", "d", "e", "f"))
+ * val res0: s399.Result[String] = Right(6)
  * }}}
  */
 trait P04:
@@ -43,4 +43,4 @@ object X04 extends P04 :
   override def length(l: List[_]): Result[Int] = ???
 
   /** A main method that executes the exercise solution above on the sample input. */
-  @main def x04main: Unit = println(length(List(1, 1, 2, 3, 5, 8)))
+  @main def x04main: Unit = println(length(List("a", "b", "c", "d", "e", "f")))

@@ -26,7 +26,7 @@ object S04 extends P04 :
    * Returns the number of elements of a list.
    *
    * This solution has an additional complexity relative to the previous ones.
-   * Namely, it introduces an auxilliary inner method.
+   * Specifically, it introduces an auxilliary inner method.
    * The purpose of the inner method is to allow us to write the solution in a tail-recursive way.
    * (See [[D104]] for a non-tail-recursive solution.)
    *
@@ -38,7 +38,7 @@ object S04 extends P04 :
    *
    * You can call the inner method anything you'd like -- I usually use `aux`, but that is probably a holdover from
    * my earlier LISP days.
-   * I also always call my accumulator `acc`, but again, anything works here.
+   * I also usually call my accumulator `acc`, but again, anything works here.
    * Finally, there's the question of using default values.
    * I like give the accumulator a reasonable default value, but require the `rest` parameter to be specified
    * explicitly.
@@ -49,7 +49,6 @@ object S04 extends P04 :
    * instead of `Result[Int]`.
    * I just kept it wrapped in `Result` to make the signatures uniform across problems.
    * In situations such as these, the auxilliary could also return `Result[Int]`.
-   * Also, the auxilliary could return its value wrapped in a `Result`.
    * See [[A304]].
    */
   override def length(l: List[_]): Result[Int] =
@@ -63,7 +62,7 @@ object S04 extends P04 :
     Right(aux(l))
 
   /** A main method that executes the provided solution above on the sample input. */
-  @main def s04main: Unit = println(length(List(1, 1, 2, 3, 5, 8)))
+  @main def s04main: Unit = println(length(List("a", "b", "c", "d", "e", "f")))
 
 // === ALTERNATE SOLUTION 1 ===
 
@@ -87,7 +86,7 @@ object A104 extends P04 :
     Right(aux())
 
   /** A main method that executes the first alternate solution above on the sample input. */
-  @main def a104main: Unit = println(length(List(1, 1, 2, 3, 5, 8)))
+  @main def a104main: Unit = println(length(List("a", "b", "c", "d", "e", "f")))
 
 // === ALTERNATE SOLUTION 2 ===
 
@@ -111,7 +110,7 @@ object A204 extends P04 :
     Right(aux(l, 0))
 
   /** A main method that executes the second alternate solution above on the sample input. */
-  @main def a204main: Unit = println(length(List(1, 1, 2, 3, 5, 8)))
+  @main def a204main: Unit = println(length(List("a", "b", "c", "d", "e", "f")))
 
 // === ALTERNATE SOLUTION 3 ===
 
@@ -136,7 +135,7 @@ object A304 extends P04 :
     aux(l)
 
   /** A main method that executes the third alternate solution above on the sample input. */
-  @main def a304main: Unit = println(length(List(1, 1, 2, 3, 5, 8)))
+  @main def a304main: Unit = println(length(List("a", "b", "c", "d", "e", "f")))
 
 // === PRACTICE SOLUTION 1 ===
 
@@ -149,6 +148,9 @@ object D104 extends P04 :
    * This is a non-tail-recursive solution.
    * Sometimes, it's easier to write the non-tail-recursive version of a solution first before trying the tail-recursive
    * version with an accumulator.
+   * However, this version can fail on long lists since it has to push a stack frame for every recursive call.
+   * So, no problems if you find this version easier to write, as long as you can convert it to the tail-recursive
+   * version afterwards.
    */
   override def length(l: List[_]): Result[Int] =
     l match
@@ -156,5 +158,5 @@ object D104 extends P04 :
       case _ :: t => length(t).map(_ + 1)
 
   /** A main method that executes the first alternate solution above on the sample input. */
-  @main def d104main: Unit = println(length(List(1, 1, 2, 3, 5, 8)))
+  @main def d104main: Unit = println(length(List("a", "b", "c", "d", "e", "f")))
 

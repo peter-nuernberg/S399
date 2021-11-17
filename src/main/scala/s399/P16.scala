@@ -18,31 +18,31 @@
 package s399
 
 /**
- * P06. (*) Find out whether a list is a palindrome.
+ * P16. (**) Drop every Nth element from a list.
  *
  * @example
  * {{{
- * scala> isPalindrome(List("a", "b", "c", "b", "a"))
- * val res0: s399.Result[Boolean] = Right(true)
+ *   scala> drop(3, List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11))
+ *   val res0: s399.Result[List[Symbol]] = Right(List(1, 2, 4, 5, 7, 8, 10, 11))
  * }}}
  */
-trait P06:
+trait P16:
 
   /**
-   * Indicates whether the given list is a palindrome.
+   * Drops every *n*th element of the given list.
    *
-   * A palindrome reads the same forwards and backwards.
-   *
-   * @param l the list to be checked
-   * @return `true` if the given list is a palindrome (or empty); `false`, otherwise
+   * @param n the number indicating which elements shluld be dropped
+   * @param as the list from which elements should be dropped
+   * @tparam A the type of elements in the given list
+   * @return either the list with the specified elements removed, or an error if the given number is negative
    */
-  def isPalindrome(l: List[_]): Result[Boolean]
+  def drop[A](n: Int, as: List[A]): Result[List[A]]
 
-/** The exercise solution to P06. */
-object X06 extends P06 :
+/** The exercise solution to [[P16]]. */
+object X16 extends P16 :
 
   // TODO: add your implementation here
-  override def isPalindrome(l: List[_]): Result[Boolean] = ???
+  override def drop[A](n: Int, as: List[A]): Result[List[A]] = ???
 
   /** A main method that executes the exercise solution above on the sample input. */
-  @main def x06main: Unit = println(isPalindrome(List("a", "b", "c", "b", "a")))
+  @main def x16main: Unit = println(drop(3, List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)))

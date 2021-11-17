@@ -22,8 +22,8 @@ package s399
  *
  * @example
  * {{{
- *   scala> reverse(List(1, 1, 2, 3, 5, 8))
- *   val res0: s399.Result[List[Int]] = Right(List(8, 5, 3, 2, 1, 1))
+ * scala> reverse(List("a", "b", "c", "d", "e", "f"))
+ * val res0: s399.Result[List[String]] = Right(List("f", "e", "d", "c", "b", "a"))
  * }}}
  */
 trait P05:
@@ -44,4 +44,4 @@ object X05 extends P05 :
   override def reverse[A](as: List[A]): Result[List[A]] = ???
 
   /** A main method that executes the exercise solution above on the sample input. */
-  @main def x05main: Unit = println(reverse(List(1, 1, 2, 3, 5, 8)))
+  @main def x05main: Unit = println(reverse(List("a", "b", "c", "d", "e", "f")))

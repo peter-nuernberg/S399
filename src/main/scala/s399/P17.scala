@@ -18,30 +18,33 @@
 package s399
 
 /**
- * P01. (*) Find the last element of a list.
+ * P01. (*) Split a list into two parts.
+ *
+ * The length of the first part is given. Use a Tuple for your result.
  *
  * @example
  * {{{
- * scala> last(List("a", "b", "c", "d", "e", "f"))
- * val res0: s399.Result[String] = Right(f)
+ *   scala> split(3, List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11))
+ *   val res0: s399.Result[(List[Int], List[Int])] = (List(1, 2, 3),List(3, 4, 5, 6, 7, 8, 9, 10, 11))
  * }}}
  */
-trait P01:
+trait P17:
 
   /**
-   * Returns the last element of a list.
+   * Returns the given list, split at the given index.
    *
+   * @param n the index that should begin the second half of the split
    * @param as the list, the last element of which should be returned
    * @tparam A the type of elements in the given list
-   * @return either the last element in the given list, or an error if the given list is empty
+   * @return the split list, with negative indexes counting from the right
    */
-  def last[A](as: List[A]): Result[A]
+  def split[A](n: Int, as: List[A]): Result[(List[A], List[A])]
 
 /** The exercise solution to [[P01]]. */
-object X01 extends P01 :
+object X17 extends P17 :
 
   // TODO: add your implementation here
-  override def last[A](as: List[A]): Result[A] = ???
+  override def split[A](n: Int, as: List[A]): Result[(List[A], List[A])] = ???
 
   /** A main method that executes the exercise solution above on the sample input. */
-  @main def x01main: Unit = println(last(List("a", "b", "c", "d", "e", "f")))
+  @main def x17main: Unit = println(split(3, List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)))

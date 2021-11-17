@@ -51,7 +51,7 @@ object S02 extends P02 :
       case _ :: t => penultimate(t)
 
   /** A main method that executes the provided solution above on the sample input. */
-  @main def s02smain: Unit = println(penultimate(List(1, 1, 2, 3, 5, 8)))
+  @main def s02smain: Unit = println(penultimate(List("a", "b", "c", "d", "e", "f")))
 
 // === ALTERNATE SOLUTION 1 ===
 
@@ -71,7 +71,7 @@ object A102 extends P02 :
       case _ => penultimate(as.tail)
 
   /** A main method that executes the first alternate solution above on the sample input. */
-  @main def a102smain: Unit = println(penultimate(List(1, 1, 2, 3, 5, 8)))
+  @main def a102smain: Unit = println(penultimate(List("a", "b", "c", "d", "e", "f")))
 
 // === ALTERNATE SOLUTION 2 ===
 
@@ -94,7 +94,7 @@ object A202 extends P02 :
       case _ :: e1 :: e2 :: t => penultimate(e1 :: e2 :: t)
 
   /** A main method that executes the second alternate solution above on the sample input. */
-  @main def a202smain: Unit = println(penultimate(List(1, 1, 2, 3, 5, 8)))
+  @main def a202smain: Unit = println(penultimate(List("a", "b", "c", "d", "e", "f")))
 
 // === ALTERNATE SOLUTION 3 ===
 
@@ -117,4 +117,4 @@ object A302 extends P02 :
       case _ :: _ :: _ :: _ => penultimate(as.tail)
 
   /** A main method that executes the third alternate solution above on the sample input. */
-  @main def a302smain: Unit = println(penultimate(List(1, 1, 2, 3, 5, 8)))
+  @main def a302smain: Unit = println(penultimate(List("a", "b", "c", "d", "e", "f")))
